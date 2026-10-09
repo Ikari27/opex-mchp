@@ -1,0 +1,232 @@
+@font-face {
+font-family: "Montserrat";
+src: url("../assets/fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
+}
+
+@media only screen and (max-width: 1000px) {
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+
+        min-height: 100vh;
+        background-attachment: fixed;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        backdrop-filter: blur(10px);
+
+        box-shadow: 2px 2px 12px rgb(0, 0, 0, 0.5);
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        background: rgba(231, 233, 235, 0.2);
+
+        box-shadow: 2px 2px 12px rgb(0, 0, 0, 0.5);
+    }
+
+    .logo {
+        width: 40px;
+        filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5));
+    }
+
+    .name {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .nav-menu {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        gap: 20px;
+        top: 0;
+        left: 0;
+
+        width: 250px;
+        height: 100vh;
+
+        z-index: 1000;
+
+        backdrop-filter: blur(10px);
+        padding-top: 50px;
+        padding-left: 20px;
+        list-style: none;
+        font-size: 24px;
+
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .nav-menu a:hover {
+        color: #ff6541;
+    }
+
+    .dp-list {
+        max-height: 0;
+        overflow: hidden;
+        margin-left: 8px;
+        transition: max-height 0.3s ease-in-out;
+    }
+
+    .dp-list.show {
+        max-height: 500px;
+    }
+
+
+}
+
+@media only screen and (min-width: 1000px) {
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        padding-left: 60px;
+        padding-right: 60px;
+
+        background: rgba(231, 233, 235, 0.5);
+        box-shadow: 2px 2px 12px rgb(0, 0, 0, 0.5);
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+
+        min-height: 100vh;
+
+        background-attachment: fixed;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        backdrop-filter: blur(10px);
+
+        box-shadow: 2px 2px 12px rgb(0, 0, 0, 0.5);
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: 40%;
+    }
+
+    .logo {
+        width: 50px;
+        filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5));
+    }
+
+    .name {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .nav-menu {
+        display: flex;
+        list-style: none;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .nav-menu > li > a {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        border-radius: 999px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-menu > li > a:hover {
+        background: #ffd3c4;
+    }
+
+    .dp:hover > a {
+    background: #ffd3c4;
+    color: #ff502e;
+    font-weight: bold;
+    }
+
+    .nav-menu a:hover {
+        color: #ff502e;
+    }
+
+    .dp {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .dp-list {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0%;
+        gap: 8px;
+        list-style: none;
+        align-items: end;
+        margin-top: 10px;
+
+        padding: 16px;
+        border-radius: 10px;
+        min-width: 10%;
+        width: max-content;
+        backdrop-filter: blur(10%);
+        background: #e7e9eb;
+        box-shadow: 0 4px 12px #ff8d6b;
+
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.25s ease;
+        z-index: 1000;
+    }
+
+    .dp:hover .dp-list {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    text-decoration: none;
+
+    color: #242424;
+}

@@ -1,0 +1,169 @@
+/* banner */
+
+.jumbotron {
+    display: flex;
+
+
+
+    background-image: url("../assets/images/blue\ bg.jpg");
+    height: 500px;
+    width: 100%;
+
+    gap: 20px;
+}
+
+.caption  h2, .caption p {
+    color: #e7e9eb;
+}
+
+.caption  h2 {
+    display: flex;
+    color: #ff502e;
+    margin-bottom: 20px;
+    font-size: clamp(1.5rem, 4vw, 5rem);
+}
+
+.caption  p {
+    display: flex;
+    font-size: clamp(0.8rem, 1.2vw, 5rem);
+    text-align: justify;
+}
+
+.caption {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 70%;
+    padding: 30px;
+}
+
+.image {
+
+    display: flex;
+}
+
+.image img {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.caption button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    margin-top: 30px;
+    font-size: clamp(14px, 1.5vw, 20px);
+    padding: 20px;
+
+    border-radius: 15px;
+    border: none;
+    background: #ff6541;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.caption button:hover {
+    transform: scale(1.05);
+    background: #ff2f15;
+    font-weight: bold;
+}
+
+.caption button:active {
+    transform: scale(0.9);
+}
+
+/* coaches gallery */
+
+.coaches {
+    margin: 20px;
+}
+
+.coaches-title {
+    display: flex;
+    justify-content: center;
+    font-family: "Montserrat", sans-serif;
+}
+
+.site-selector {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    gap: 20px;
+}
+
+.site-selector button {
+    width:  600px;
+    padding: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: "Montserrat", sans-serif;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.site-selector button:hover {
+    background-color: #ff472d;
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+.site-selector button.active {
+    background: #ff583a;
+    color: #e7e9eb;
+    font-weight: bold;
+    transform: scale(0.9);
+}
+
+.coaches-gallery {
+    display: none;
+}
+
+.coaches-gallery.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.coachrow {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.coach-card {
+    height: 400px;
+    border-radius: 15px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 300px;
+    overflow: hidden;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.coach-card:hover {
+    box-shadow: 2px 2px 8px #be1908;
+    transform: scale(1.05);
+}
+
+.coach-caption {
+    margin: 5px;
+    font-family: "Montserrat", sans-serif;
+    margin: 20px;
+    margin-top: 10px;
+}
+
+.coach-card img {
+    object-fit: cover;
+    display: block;
+    width: 100%;
+    height: 250px;
+}

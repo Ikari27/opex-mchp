@@ -1,0 +1,87 @@
+/* scopes */
+
+.scopes {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-image: url("../assets/images/blue\ bg\ 2.jpg");
+    height: 500%;
+    padding: 60px;
+    gap: 20px;
+}
+
+.header {
+    display: flex;
+    position: relative;
+
+    flex-wrap: wrap;
+}
+
+.header h1 {
+    display: flex;
+    color: #ff502e;
+    font-size: clamp(22px, 3vw, 40px);
+    text-align: center;
+}
+
+.main {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 20px;
+
+}
+
+.desc {
+    position: relative;
+    width: 500px;
+    height: 520px;
+    border: 3px solid red;
+    border-radius: 10px;
+    background: #fdf4f0;
+    box-shadow: 2px 2px 8px #be1908;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.desc-header {
+    display: flex;
+    align-items: center;
+    
+    border-radius: 10px;
+    padding: 10px;
+    background-color: rgba(231, 233, 235, 0.829);
+    box-shadow: 2px 2px 8px #be1908;
+}
+
+.desc-header > div > h1 {
+    font-size: clamp(58px, 5vw, 600px);
+    color: #ff502e;
+}
+
+.desc-header > div > h3 {
+    font-size: clamp(22px, 1.8vw, 40px);
+    color: #ff502e;
+}
+
+.desc-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.bubble-graph {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.bubble-graph h2 {
+    color: white;
+
+}

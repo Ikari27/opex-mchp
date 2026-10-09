@@ -1,0 +1,75 @@
+.line2 {
+    margin: 0 auto;
+    width:80%;
+    height:3px;
+    background:rgb(255, 70, 70);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 20px;
+    margin-top: 50px;
+    font-family: "Montserrat", sans-serif;
+}
+
+.title h2 {
+    font-size: 32px;
+    text-align: center;
+}
+
+.timeline {
+    position: relative;
+    margin: 50px auto;
+    font-family: "Montserrat", sans-serif;
+    max-width: 1000px;
+}
+
+.timeline::before {
+    content: "";
+    position:absolute;
+    left:27px;
+    top:10px;
+    width:3px;
+    height:90%;
+    background:rgb(255, 70, 70);
+    box-shadow: 2px 2px 8px rgba(255, 0, 0, 0.5);
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns:70px 200px 1fr;
+    position:relative;
+    margin-top: 80px;
+}
+
+.icon {
+    display: flex;
+    justify-content: left;
+    height: 50px;
+    width: 50px;
+    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5));
+}
+
+.year {
+    display: flex;
+    justify-content: left;
+}
+
+.year h1 {
+    display: flex;
+    align-items: center;
+    font-size: clamp(22px, 2vw, 40px);
+}
+
+.content p {
+    font-size: clamp(16px, 1vw, 26px);
+}
+
+.content {
+    margin-top: 5px;
+    display: flex;
+    justify-content: left;
+}
