@@ -61,7 +61,7 @@
     border-radius: 15px;
     border: none;
     background: #ff6541;
-    color: white;
+    color: #e7e9eb;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -103,7 +103,7 @@
     cursor: pointer;
     font-size: 18px;
     font-family: "Montserrat", sans-serif;
-    background-color: white;
+    background-color: #e7e9eb;
     transition: all 0.3s ease;
 }
 

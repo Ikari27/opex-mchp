@@ -1,6 +1,6 @@
 document.querySelectorAll(".bubble").forEach(bubble => {
     const count = Number(
-        bubble.querySelector(".context p").textContent
+        bubble.querySelector(".bubble-context h1").textContent
     );
 
     const diameter = 115 * Math.sqrt(count);
@@ -8,4 +8,3 @@ document.querySelectorAll(".bubble").forEach(bubble => {
     bubble.style.width = `${diameter}px`;
     bubble.style.height = `${diameter}px`;
 });
-``
