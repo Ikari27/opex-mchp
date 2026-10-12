@@ -296,7 +296,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px;
+    gap: 60px;
     flex-wrap: wrap;
 }
 
@@ -310,15 +310,23 @@
 
     flex-grow: 0;
     flex-shrink: 0;
-    flex-basis: 300px;
+    flex-basis: 350px;
 }
 
 .opp-card ul {
     margin: 20px;
+    font-size: clamp(16px, 1vw, 32px);
 }
 
 .opp-card h2 {
     color: #ff502e;
+    font-size: clamp(16px, 1.2vw, 32px);
+}
+
+@media only screen and (max-width: 750px) {
+    .opp-title {
+        text-align: center;
+    }
 }
 
 /* participation */

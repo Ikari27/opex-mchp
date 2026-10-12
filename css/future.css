@@ -5,6 +5,27 @@
     background:rgb(255, 70, 70);
 }
 
+main {
+    position: relative;
+    overflow: hidden;
+}
+
+main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image: url("../assets/images/Picture1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    filter: blur(10px);
+    transform: scale(1.05);
+
+    z-index: -1;
+}
+
 .header {
     display: flex;
     align-items: center;
@@ -18,13 +39,14 @@
 .title h2 {
     font-size: 32px;
     text-align: center;
+    color: white;
 }
 
 .timeline {
     position: relative;
-    margin: 50px auto;
+    margin: 30px auto;
     font-family: "Montserrat", sans-serif;
-    max-width: 1000px;
+    max-width: 1500px;
 }
 
 .timeline::before {
@@ -40,7 +62,7 @@
 
 .timeline-item {
     display: grid;
-    grid-template-columns:70px 200px 1fr;
+    grid-template-columns:70px 600px 1fr;
     position:relative;
     margin-top: 80px;
 }
@@ -62,10 +84,12 @@
     display: flex;
     align-items: center;
     font-size: clamp(22px, 2vw, 40px);
+    color: white;
 }
 
 .content p {
     font-size: clamp(16px, 1vw, 26px);
+    color: white;
 }
 
 .content {
