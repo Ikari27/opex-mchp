@@ -12,19 +12,27 @@ main {
 
 main::before {
     content: "";
-    position: absolute;
+    position: fixed;
     inset: 0;
 
-    background-image: url("../assets/images/Picture1.png");
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.5),
+            rgba(0, 0, 0, 0.5)
+        ),
+        url("../assets/images/Picture1.png");
+
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 
-    filter: blur(10px);
+    filter: blur(1px);
     transform: scale(1.05);
 
     z-index: -1;
 }
+
+/* timeline */
 
 .header {
     display: flex;
@@ -39,14 +47,14 @@ main::before {
 .title h2 {
     font-size: 32px;
     text-align: center;
-    color: white;
+    color: #e7e9eb;
 }
 
 .timeline {
     position: relative;
-    margin: 30px auto;
+    margin: 100px auto;
     font-family: "Montserrat", sans-serif;
-    max-width: 1500px;
+    max-width: 1200px;
 }
 
 .timeline::before {
@@ -84,16 +92,33 @@ main::before {
     display: flex;
     align-items: center;
     font-size: clamp(22px, 2vw, 40px);
-    color: white;
+    color: #e7e9eb;
+    text-shadow: 2px 2px 18px rgba(0, 0, 0, 1);
 }
 
 .content p {
     font-size: clamp(16px, 1vw, 26px);
-    color: white;
+    color: #e7e9eb;
+    text-shadow: 2px 2px 18px rgba(0, 0, 0, 1);
 }
 
 .content {
     margin-top: 5px;
     display: flex;
     justify-content: left;
+}
+
+/* house */
+
+.house {
+    display: flex;
+    border: 2px solid red;
+    margin: 20px;
+    max-height: 100vh;
+}
+
+.house img {
+    position: relative;
+    object-fit: contain;
+    width: 100%;
 }
