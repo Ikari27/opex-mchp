@@ -16,35 +16,36 @@
             <div class="navbar">
                 <div class="brand">
                     <img class="logo" src="./assets/images/logo2.png" alt="logo">
-                    <span class="name"><a href="./index.html" rel="prefetch">OPERATIONAL EXCELLENCE</a></span>
+                    <span class="name"><a href="./index.php" rel="prefetch">OPERATIONAL EXCELLENCE</a></span>
                 </div>
 
                 <ul class="nav-menu">
-                    <li><a href="./index.html" rel="prefetch">Home</a></li>
+                    <li><a href="./index.php" rel="prefetch">Home</a></li>
 
                     <li class="dp"><a>Experts</a>
                         <ul class="dp-list">
-                            <li><a href="./coaches.html" rel="prefetch">Coaches</a></li>
-                            <li><a href="./greenbelts.html" rel="prefetch">Lean Six Sigma Green Belts</a></li>
-                            <li><a href="./blackbelts.html" rel="prefetch">Lean Six Sigma Black Belts</a></li>
+                            <li><a href="./coaches.php" rel="prefetch">Coaches</a></li>
+                            <li><a href="./greenbelts.php" rel="prefetch">Lean Six Sigma Green Belts</a></li>
+                            <li><a href="./blackbelts.php" rel="prefetch">Lean Six Sigma Black Belts</a></li>
                         </ul>
                     </li>
 
                     <li class="dp"><a>Knowledge Center</a>
                         <ul class="dp-list">
-                            <li><a href="./future.html" rel="prefetch">Business Metrics of OpEx</a></li>
-                            <li><a href="./lean.html" rel="prefetch">Lean Six Sigma</a></li>
-                            <li><a href="./cit.html" rel="prefetch">Lean CIT</a></li>                            
+                            <li><a href="./future.php" rel="prefetch">Business Metrics of OpEx</a></li>
+                            <li><a href="./lean.php" rel="prefetch">Lean Six Sigma</a></li>
+                            <li><a href="./cit.php" rel="prefetch">Lean CIT</a></li>
+                            <li><a href="./about.php" rel="prefetch">About</a></li>                         
                         </ul>
                     </li>
 
                     <li class="dp"><a>LSS Hub</a>
                         <ul class="dp-list">
-                            <li><a href="./dashboard.html" rel="prefetch">Dashboard</a></li>
-                            <li><a href="./training.html" rel="prefetch">Trainings</a></li>
-                            <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
-                            <li><a href="./login.html" rel="prefetch">Login</a></li>
-                            <li><a href=".//register.html" rel="prefetch">Register</a></li>
+                            <li><a href="./dashboard.php" rel="prefetch">Dashboard</a></li>
+                            <li><a href="./training.php" rel="prefetch">Trainings</a></li>
+                            <li><a href="./coaching.php" rel="prefetch">Coaching</a></li>
+                            <li><a href="./login.php" rel="prefetch">Login</a></li>
+                            <li><a href=".//register.php" rel="prefetch">Register</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -98,7 +99,7 @@
                     </div>
 
                     <div class="image">
-                        <img src="./assets/images/sample.png" alt="">
+                        <img src="./assets/images/M' Meldz 2 (2).png" alt="">
                     </div>
                 </div>
             </section>

@@ -92,8 +92,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 70%;
+    width: 100%;
     padding: 30px;
+    padding-left: 80px;
     z-index: 1;
 }
 
@@ -111,6 +112,7 @@
 
 .image {
     display: flex;
+    margin-left: 250px;
 }
 
 .image img {
