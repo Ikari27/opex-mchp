@@ -25,3 +25,17 @@ navbar.addEventListener("click", function (e) {
         });
     }
 });
+
+//login info
+fetch("/api/user")
+    .then(res => res.json())
+    .then(data => {
+
+        if (data.loggedIn) {
+
+            document.getElementById("userInfo").innerHTML =
+                `Welcome ${data.user.firstname}`;
+
+        }
+
+    });

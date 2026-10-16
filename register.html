@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Register | Operational Excellence Portal</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Operational Excellence Portal">
+        <meta name="keywords" content="Lean Six Sigma, Dashboard, Green Belt">
+        <meta name="author" content="Mark Daniel Tabor">
+        <link href="./css/global.css" rel="stylesheet"/>
+        <link href="./css/register.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <nav>
+            <div class="navbar">
+                <div class="brand">
+                    <img class="logo" src="./assets/images/logo2.png" alt="logo">
+                    <span class="name"><a href="./index.html" rel="prefetch">OPERATIONAL EXCELLENCE</a></span>
+                </div>
+
+                <ul class="nav-menu">
+                    <li><a href="./index.html" rel="prefetch">Home</a></li>
+
+                    <li class="dp"><a>Experts</a>
+                        <ul class="dp-list">
+                            <li><a href="./coaches.html" rel="prefetch">Coaches</a></li>
+                            <li><a href="./greenbelts.html" rel="prefetch">Lean Six Sigma Green Belts</a></li>
+                            <li><a href="./blackbelts.html" rel="prefetch">Lean Six Sigma Black Belts</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>Knowledge Center</a>
+                        <ul class="dp-list">
+                            <li><a href="./future.html" rel="prefetch">Business Metrics of OpEx</a></li>
+                            <li><a href="./lean.html" rel="prefetch">Lean Six Sigma</a></li>
+                            <li><a href="./cit.html" rel="prefetch">Lean CIT</a></li>
+                            <li><a href="./about.html" rel="prefetch">About</a></li>                         
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>LSS Hub</a>
+                        <ul class="dp-list">
+                            <li><a href="./dashboard.html" rel="prefetch">Dashboard</a></li>
+                            <li><a href="./training.html" rel="prefetch">Trainings</a></li>
+                            <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
+                            <li><a href="./login.html" rel="prefetch">Login</a></li>
+                            <li><a href="./register.html" rel="prefetch">Register</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+            <section>
+                <div class="right-panel">
+                    <button class="home" onclick="window.location.href='./index.html'">&#10094; Back to Home</button>
+
+                    <div class="register">
+                        <div class="registerpage">
+                            <div class="register-header">
+                                <h2>Welcome!</h2>
+                                <p>Please complete the form below.</p>
+                            </div>
+
+                            <form class="regform" id="regForm" action="/register" method="POST">
+                                <fieldset>
+                                    <label for="first-name">First Name <input type="text" name="firstname" required></label>
+                                    <label for="last-name">Last Name <input type="text" name="lastname" required></label>
+                                    <label for="email">BadgeID <input type="text" name="badgeid" required></label>
+                                    <label for="email">MCHP Email <input type="email" name="email" required></label>
+                                    <label for="password">Password <input type="password" name="password" required></label>
+                                </fieldset>
+
+                                <fieldset>
+                                    <button class="submit">Submit</button>
+                                </fieldset>
+                            </form>
+
+                            <div class="login">
+                                <p>Already have an account?</p><a href="./login.html">Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script src="./js/register.js"></script>
+        <script src="./js/global.js"></script>
+    </body>
+    <footer>© 2026 Microchip Philippines</footer>
+</html>

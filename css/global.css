@@ -237,3 +237,13 @@ src: url("../assets/fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
 body {
     background: #e7e9eb;
 }
+
+.greeting {
+    padding: 5px 5px;
+    text-align: left;
+}
+
+.greeting > span {
+    color: #ff502e;
+    font-weight: bold;
+}

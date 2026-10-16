@@ -39,7 +39,7 @@ showSlide(index);
 });
 });
 
-//reset timer
+//reset timer if manual change slider
 let autoSlide = setInterval(nextSlide, 6000);
 
 function resetTimer() {

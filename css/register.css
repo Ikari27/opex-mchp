@@ -77,13 +77,20 @@
     font-family: "Montserrat", sans-serif;
     border-radius: 15px;
     border: none;
-    background: rgb(255, 70, 70);
-    color: white;
+    background: #ff6541;
+    color: #e7e9eb;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .submit:hover {
-    background: rgb(255, 0, 0);
+    transform: scale(1.05);
+    background: #ff2f15;
+    font-weight: bold;
+}
+
+.submit:active {
+    transform: scale(0.9);
 }
 
 .login {
