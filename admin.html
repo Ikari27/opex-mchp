@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Operational Excellence Portal</title>
+        <title>Admin Page | Operational Excellence Portal</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Operational Excellence Portal">
@@ -41,13 +41,12 @@
 
                     <li class="dp"><a>LSS Hub</a>
                         <ul class="dp-list">
-                            <div class="greeting">Hello <span>ADMIN</span></div>
-                            <li><a href="./login.html" rel="prefetch">Login</a></li>
-                            <li><a href=".//register.html" rel="prefetch">Register</a></li>
-                            <li><a href="./dashboard.html" rel="prefetch">Dashboard</a></li>
+                            <div id="hello" class="greeting">Hello! <span class="firstname"></span></div>
+                            <li id="login"><a href="./login.html" rel="prefetch">Login</a></li>
+                            <li id="admin"><a href="./admin.html" rel="prefetch">Admin</a></li>
                             <li><a href="./training.html" rel="prefetch">Trainings</a></li>
                             <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
-                            <li><a href="#" rel="prefetch">Logout</a></li>
+                            <li id="logout"><a href="/logout" rel="prefetch">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -62,20 +61,16 @@
                             Dashboard
                         </div>
 
-                        <div class="menu-item" onclick="showSection('add-project', this)">
-                            Add Project
+                        <div class="menu-item" onclick="showSection('project', this)">
+                            Project
                         </div>
 
-                        <div class="menu-item" onclick="showSection('edit-project', this)">
-                            Edit Project
+                        <div class="menu-item" onclick="showSection('users', this)">
+                            Users
                         </div>
 
-                        <div class="menu-item" onclick="showSection('add-member', this)">
-                            Add Member
-                        </div>
-
-                        <div class="menu-item" onclick="showSection('edit-member', this)">
-                            Edit Member
+                        <div class="menu-item" onclick="showSection('settings', this)">
+                            Settings
                         </div>
                     </div>
 
@@ -83,16 +78,16 @@
 
                         <div id="dashboard" class="content-section">
                             <div class="header">
-                                <h1>Welcome, <span>ADMIN</span></h1>
+                                <h1>Welcome, <span class="firstname"></span></h1>
                             </div>
                         </div>
 
-                        <div id="add-project" class="content-section" style="display:none;">
+                        <div id="project" class="content-section" style="display:none;">
                             <div class="header">
-                                <h1>Add Project</h1>
+                                <h1>Project</h1>
                             </div>
 
-                            <form class="project-form" action="">
+                            <form class="project-form">
                                 <fieldset>
                                     <label for="project_owner">Project Owner <input type="text" name="project_owner" required></label>
                                     <label for="project_title">Project Name <input type="text" name="project_title" required></label>
@@ -105,40 +100,33 @@
                             </form>
                         </div>
 
-                        <div id="edit-project" class="content-section" style="display:none;">
+                        <div id="users" class="content-section" style="display:none;">
                             <div class="header">
-                                <h1>Edit Project</h1>
+                                <h1>Users</h1>
                             </div>
 
-                            <form class="project-form" action="">
-                                <fieldset>
-                                    <label for="project_owner">Project Owner <input type="text" name="project_owner" required></label>
-                                    <label for="project_title">Project Name <input type="text" name="project_title" required></label>
-                                    <label for="project_title">Project Impact <input type="text" name="project_title" required></label>
-                                </fieldset>
-
-                                <fieldset>
-                                    <label for="project_owner">Project Owner <input type="text" name="project_owner" required></label>
-                                    <label for="project_title">Project Name <input type="text" name="project_title" required></label>
-                                    <label for="project_title">Project Impact <input type="text" name="project_title" required></label>
-                                </fieldset>
-
-                                <fieldset>
-                                    <button class="submit">Submit</button>
-                                </fieldset>
-                            </form>
-                        </div>
-
-                        <div id="add-member" class="content-section" style="display:none;">
-                            <div class="header">
-                                <h1>Add Member</h1>
+                            <div class="user-list">
+                                <h3>Registered Users</h3>
+                                <table class="user-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Badge ID</th>
+                                            <th>Full Name</th>
+                                            <th>MCHP Email</th>
+                                            <th>User Role</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userTableBody">
+                                        
+                                    </tbody>
+                                </table>
                             </div>
 
-                            <form class="member-form" action="">
+                            <form class="member-form" action="/register" method="POST">
                                 <fieldset>
-                                    <label for="first-name">First Name <input type="text" name="firstname" required></label>
-                                    <label for="last-name">Last Name <input type="text" name="lastname" required></label>
-                                    <label for="email">BadgeID <input type="text" name="badgeid" required></label>
+                                    <label for="firstname">First Name <input type="text" name="firstname" required></label>
+                                    <label for="lastname">Last Name <input type="text" name="lastname" required></label>
+                                    <label for="badgeid">BadgeID <input type="text" name="badgeid" required></label>
                                     <label for="email">MCHP Email <input type="email" name="email" required></label>
                                     <label for="password">Password <input type="password" name="password" required></label>
                                 </fieldset>
@@ -149,26 +137,45 @@
                             </form>
                         </div>
 
-                        <div id="edit-member" class="content-section" style="display:none;">
-                            <div class="header">
-                                <h1>Edit Member</h1>
+                        <!-- User Profile View Section -->
+                        <div id="user-profile" class="content-section" style="display: none;">
+                            <button id="backToUsersBtn">&larr; Back to Users</button>
+                            
+                            <div class="profile-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h2>User Profile</h2>
+                                    <button id="editProfileBtn">Edit Profile</button>
+                                </div>
+
+                                <!-- VIEW MODE (Displayed by default) -->
+                                <div id="profileViewMode">
+                                    <p><strong>First Name:</strong> <span id="viewFirstname"></span></p>
+                                    <p><strong>Last Name:</strong> <span id="viewLastname"></span></p>
+                                    <p><strong>Badge ID:</strong> <span id="viewBadge"></span></p>
+                                    <p><strong>Email:</strong> <span id="viewEmail"></span></p>
+                                    <p><strong>Role:</strong> <span id="viewRole"></span></p>
+                                </div>
+
+                                <!-- EDIT MODE (Hidden by default) -->
+                                <div id="profileEditMode" style="display: none;">
+                                    <p><strong>First Name:</strong> <input type="text" id="editFirstname"></p>
+                                    <p><strong>Last Name:</strong> <input type="text" id="editLastname"></p>
+                                    <p><strong>Badge ID:</strong> <input type="text" id="editBadge" readonly></p>
+                                    <p><strong>Email:</strong> <input type="email" id="editEmail"></p>
+                                    <p><strong>Role:</strong> 
+                                        <select id="editRole">
+                                            <option value="Admin">Admin</option>
+                                            <option value="User">User</option>
+                                        </select>
+                                    </p>
+                                    
+                                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                        <button id="saveUserBtn">Save Changes</button>
+                                        <button id="cancelEditBtn" type="button">Cancel</button>
+                                    </div>
+                                </div>
                             </div>
-
-                            <form class="member-form" action="">
-                                <fieldset>
-                                    <label for="first-name">First Name <input type="text" name="firstname" required></label>
-                                    <label for="last-name">Last Name <input type="text" name="lastname" required></label>
-                                    <label for="email">BadgeID <input type="text" name="badgeid" required></label>
-                                    <label for="email">MCHP Email <input type="email" name="email" required></label>
-                                    <label for="password">Password <input type="password" name="password" required></label>
-                                </fieldset>
-
-                                <fieldset>
-                                    <button class="submit">Submit</button>
-                                </fieldset>
-                            </form>
                         </div>
-
                     </div>
                 </div>
             </section>
