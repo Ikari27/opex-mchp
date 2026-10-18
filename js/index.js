@@ -1,3 +1,7 @@
+//==========
+// CAROUSEL
+//==========
+
 const slides = document.querySelectorAll(".slide");
 const indicators = document.querySelectorAll(".indicators button");
 const nextBtn = document.querySelector(".next");
@@ -56,3 +60,4 @@ prevBtn.addEventListener("click", () => {
     prevSlide();
     resetTimer();
 });
+

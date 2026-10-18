@@ -7,6 +7,7 @@
         <meta name="description" content="Operational Excellence Portal">
         <meta name="keywords" content="Lean Six Sigma, Dashboard, Green Belt">
         <meta name="author" content="Mark Daniel Tabor">
+        <link rel="icon" href="/assets/images/logo2.png"/>
         <link href="./css/global.css" rel="stylesheet"/>
         <link href="./css/index.css" rel="stylesheet"/>
     </head>
@@ -46,7 +47,7 @@
                             <li id="admin"><a href="./admin.html" rel="prefetch">Admin</a></li>
                             <li><a href="./training.html" rel="prefetch">Trainings</a></li>
                             <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
-                            <li id="logout"><a href="/logout" rel="prefetch">Logout</a></li>
+                            <li id="logout"><a href="/logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -54,78 +55,53 @@
         </nav>
 
         <main>
-            <!--<section class="intro">
-                <div class="hero hero-intro">
-                    <h1>OUR FACTORY 4.0 IS SHIFTING GEARS</h1>
+            <section id="editor-bar" style="padding: 10px 20px; background: #eee; text-align: right; display: none; position: sticky; top: 70px; z-index: 100;">
+                <div id="editor-toolbar" style="display: none; margin-bottom: 5px;">
                 </div>
-
-                <div class="hero">
-                    <h1>BEFORE, WE WERE JUST LEARNING</h1>
-                </div>
-
-                <div class="hero ">
-                    <h1>NOW, WE HAVE TURNED THE CORNER</h1>
-                </div>
-
-                <div class="hero">
-                    <h1>WE ARE BEGINNING TO GAIN MILEAGE</h1>
-                </div>
-
-                <div class="hero">
-                    <h1>IT IS TIME TO PUSH THE PEDAL TO THE METAL</h1>
-                </div>
-
-                <div class="hero">
-                    <h1>PUSH HARDER AND PUSH FASTER!</h1>
-                </div>
-
-                <div class="hero">
-                    <h1>TO CAPITALIZE ON OUR GAINS!</h1>
-                </div>
-
-                <div class="hero">
-                    <h1>WELCOME TO</h1>
-                </div>
-
-                <div class="hero">
-                    <h1>OPERATIONAL EXCELLENCE</h1>
-                </div>
-            </section>-->
-
+                
+                <button id="save-btn" style="display: none; background: #28a745; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="saveAllChanges()">Save All Changes</button>
+                <button id="cancel-btn" style="display: none; margin-left: 5px; background-color: #6c757d; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="cancelChanges()">Cancel</button>
+                <span id="status-msg" style="margin-left: 10px; font-weight: bold;"></span>
+            </section>
+            
             <section>
                 <div class="jumbotron">
                     <div class="caption">
-                        <h2>Operational Excellence</h2>
-                        <p>Lead and integrate company-wide continuous improvement efforts by championing a data-driven culture of operational excellence and leveraging Lean Six Sigma Black Belts, Green Belts, Kaizen teams, digital transformation initiatives, and other strategic improvement programs to systematically eliminate waste, reduce process variation, optimize productivity, improve quality, lower costs, and deliver sustainable business value.</p>
+                        <h2 data-id="1" class="editable">Operational Excellence</h2>
+                        <p data-id="2" class="editable">Lead and integrate company-wide continuous improvement efforts by championing a data-driven culture of operational excellence and leveraging Lean Six Sigma Black Belts, Green Belts, Kaizen teams, digital transformation initiatives, and other strategic improvement programs to systematically eliminate waste, reduce process variation, optimize productivity, improve quality, lower costs, and deliver sustainable business value.</p>
                     </div>
 
                     <div class="image">
-                        <img src="./assets/images/M' Meldz 2 (2).png" alt="">
+                        <!-- Assign a unique data-id (e.g., id 16) -->
+                        <img data-id="21" class="editable-img" alt="Operational Excellence">
+                        
+                        <!-- Hidden file input triggered when admin clicks the image -->
+                        <input type="file" id="image-file-input-21" style="display: none;" accept="image/*" onchange="uploadImage(21, this)">
                     </div>
                 </div>
             </section>
 
             <section>
                 <div class="stats">
-                    <div class="stats-card"><!--placeholder-->
+                    <div class="stats-card">
                         <h1>$7.3M</h1>
-                        <h3>SAVED</h3>
-                        <p>Cost Improvements Initiatives</p>
+                        <h3 data-id="3" class="editable">SAVED</h3>
+                        <p data-id="4" class="editable">Cost Improvements Initiatives</p>
                     </div>
 
 
-                    <div class="stats-card"><!--placeholder-->
+                    <div class="stats-card">
                         <h1>44</h1>
-                        <h3>TRAINED</h3>
-                        <p>GB & BB Certified</p>
+                        <h3 data-id="5" class="editable">TRAINED</h3>
+                        <p data-id="6" class="editable">GB & BB Certified</p>
                     </div>
 
 
 
-                    <div class="stats-card"><!--placeholder-->
+                    <div class="stats-card">
                         <h1>17</h1>
-                        <h3>PROJECTS</h3>
-                        <p>Accomplished</p>
+                        <h3 data-id="7" class="editable">PROJECTS</h3>
+                        <p data-id="8" class="editable">Accomplished</p>
                     </div>
                 </div>
             </section>
@@ -133,16 +109,20 @@
             <section>
                 <div class="path2opex">
                     <div class="path2opex-video">
-                        <video src="./assets/videos/FACTORY 4.0 Race 4 LYF.mp4" loop autoplay muted poster></video>
+                        <!-- Unique data-id and class -->
+                        <video data-id="25" class="editable-video" loop autoplay muted poster></video>
+                        
+                        <!-- Hidden file input triggered when admin clicks the video -->
+                        <input type="file" id="image-file-input-25" style="display: none;" accept="video/mp4,video/webm,video/ogg" onchange="uploadImage(25, this)">
                     </div>
 
                     <div class="path2opex-caption">
-                        <h2>F4.0: A Journey to Operational Excellence</h2>
-                        <p>A journey that involves applying the right tools to the right processes.</p>
-                        <p>An Operational Excellence through:</p>
-                        <p>✓ Teamwork</p>
-                        <p>✓ Empowered Employees</p>
-                        <p>✓ Engaged Employees</p>
+                        <h2 data-id="9" class="editable">F4.0: A Journey to Operational Excellence</h2>
+                        <p data-id="10" class="editable">A journey that involves applying the right tools to the right processes.</p>
+                        <p data-id="11" class="editable">An Operational Excellence through:</p>
+                        <p data-id="12" class="editable">✓ Teamwork</p>
+                        <p data-id="13" class="editable">✓ Empowered Employees</p>
+                        <p data-id="14" class="editable">✓ Engaged Employees</p>
                     </div>
                 </div>
             </section>
@@ -163,26 +143,41 @@
                     </div>
 
                     <div class="slide active">
-                        <img src="./assets/images/sample1.jpg" alt="slide1">
+                            <!-- Assign a unique data-id (e.g., id 16) -->
+                            <img data-id="22" class="editable-img" alt="Operational Excellence">
+                            
+                            <!-- Hidden file input triggered when admin clicks the image -->
+                            <input type="file" id="image-file-input-22" style="display: none;" accept="image/*" onchange="uploadImage(22, this)">
+
                         <div class="slide-caption">
-                            <h2>Operational Excellence</h2>
-                            <p>Success is not achieved by one giant leap, but by many small, deliberate steps that eventually help reach the summit.</p>
+                            <h2 data-id="15" class="editable">Operational Excellence</h2>
+                            <p data-id="16" class="editable">Success is not achieved by one giant leap, but by many small, deliberate steps that eventually help reach the summit.</p>
                         </div>
                     </div>
 
                     <div class="slide">
-                        <img src="./assets/images/sample2.jpg" alt="slide2">
+                            <!-- Assign a unique data-id (e.g., id 16) -->
+                            <img data-id="23" class="editable-img" alt="Operational Excellence">
+                            
+                            <!-- Hidden file input triggered when admin clicks the image -->
+                            <input type="file" id="image-file-input-23" style="display: none;" accept="image/*" onchange="uploadImage(23, this)">
+                        
                         <div class="slide-caption">
-                            <h2>Operational Excellence Team </h2>
-                            <p>Will drive all Continuous Improvement initiatives through Lean Six Sigma (Black Belt and Green Belt) programs, Kaizen teams, digital transformation initiatives, productivity improvements, cost reduction programs, and other strategic operational excellence efforts.</p>
+                            <h2 data-id="17" class="editable">Operational Excellence Team </h2>
+                            <p data-id="18" class="editable">Will drive all Continuous Improvement initiatives through Lean Six Sigma (Black Belt and Green Belt) programs, Kaizen teams, digital transformation initiatives, productivity improvements, cost reduction programs, and other strategic operational excellence efforts.</p>
                         </div>
                     </div>
 
                     <div class="slide">
-                        <img src="./assets/images/sample3.jpg" alt="slide3">
+                            <!-- Assign a unique data-id (e.g., id 16) -->
+                            <img data-id="24" class="editable-img" alt="Operational Excellence">
+                            
+                            <!-- Hidden file input triggered when admin clicks the image -->
+                            <input type="file" id="image-file-input-24" style="display: none;" accept="image/*" onchange="uploadImage(24, this)">
+                        
                         <div class="slide-caption">
-                            <h2>Operational Excellence Program Framework</h2>
-                            <p>Lead and integrate company-wide continuous improvement efforts by championing a data-driven culture of operational excellence and leveraging Lean Six Sigma Black Belts, Green Belts, Kaizen teams, digital transformation initiatives, and other strategic improvement programs to systematically eliminate waste, reduce process variation, optimize productivity, improve quality, lower costs, and deliver sustainable business value.</p>
+                            <h2 data-id="19" class="editable">Operational Excellence Program Framework</h2>
+                            <p data-id="20" class="editable">Lead and integrate company-wide continuous improvement efforts by championing a data-driven culture of operational excellence and leveraging Lean Six Sigma Black Belts, Green Belts, Kaizen teams, digital transformation initiatives, and other strategic improvement programs to systematically eliminate waste, reduce process variation, optimize productivity, improve quality, lower costs, and deliver sustainable business value.</p>
                         </div>
                     </div>
                 </div>

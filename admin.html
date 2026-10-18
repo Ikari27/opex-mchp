@@ -7,6 +7,7 @@
         <meta name="description" content="Operational Excellence Portal">
         <meta name="keywords" content="Lean Six Sigma, Dashboard, Green Belt">
         <meta name="author" content="Mark Daniel Tabor">
+        <link rel="icon" href="/assets/images/logo2.png"/>
         <link href="./css/global.css" rel="stylesheet"/>
         <link href="./css/admin.css" rel="stylesheet"/>
     </head>
@@ -46,7 +47,7 @@
                             <li id="admin"><a href="./admin.html" rel="prefetch">Admin</a></li>
                             <li><a href="./training.html" rel="prefetch">Trainings</a></li>
                             <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
-                            <li id="logout"><a href="/logout" rel="prefetch">Logout</a></li>
+                            <li id="logout"><a href="/logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -54,8 +55,7 @@
         </nav>
 
         <main>
-            <section>
-                <div class="admin-page">
+            <div class="admin-page">
                     <div class="left-panel">
                         <div class="menu-item active" onclick="showSection('dashboard', this)">
                             Dashboard
@@ -78,11 +78,202 @@
 
                         <div id="dashboard" class="content-section">
                             <div class="header">
-                                <h1>Welcome, <span class="firstname"></span></h1>
+                                <h1>Hello, <span class="firstname">daniel</span></h1>
+                            </div>
+
+                            <div class="subheader">
+                                <h2>Statistics</h2>
+                            </div>
+
+                            <div class="cards-stats">
+                                <div class="card-db"> <!--placeholder-->
+                                    <h3>Total Views</h3>
+                                    <h1>100<span>views</span></h1>
+                                </div>
+
+                                <div class="card-db"> <!--placeholder-->
+                                    <h3>Total Registered Users</h3>
+                                    <h1>100<span>views</span></h1>
+                                </div>
                             </div>
                         </div>
 
-                        <div id="project" class="content-section" style="display:none;">
+                        <div id="project" class="content-section">
+                            <div class="header">
+                                <h1>Projects</h1>
+                            </div>
+
+                            <div class="project-list" id="project-list">
+                                <div class="row-button">
+                                    <h3>Registered Projects</h3>
+                                    <div class="buttons">
+                                        <Button id="addProjectToggleBtn">Add New Project</Button>
+                                     <!--<Button id="editProjectToggleBtn">Edit Project Details</Button>-->
+                                    </div>
+                                </div>
+                                <table class="projects-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Project Owner</th>
+                                            <th>Project Title</th>
+                                            <th>Project Impact</th>
+                                            <th>Project Saved ($)</th>
+                                            <th>Financial Impact</th>
+                                            <th>Quality Improved</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="projectsTableBody">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <section>
+                                <div class="project-formpage" id="project-form" style="display: none;">
+                                    <button class="backbutton" id="backFromAddProjectBtn">&#10094; Back</button>
+                                    <h2>Add New Project</h2>
+                                    <form class="project-form">
+                                        <fieldset>
+                                            <label for="project_owner">Project Owner: <input type="text" name="project_owner" required></label> 
+                                            <label for="project_title">Project Title: <input type="text" name="project_title" required></label>
+                                            <label for="project_impact">Project Impact: <input type="text" name="project_impact" required></label>
+                                        </fieldset>
+
+                                        <fieldset>
+                                            <button class="submit">Submit</button>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div id="users" class="content-section">
+                            <div class="header">
+                                <h1>Users</h1>
+                            </div>
+
+                            <div class="user-list" id="user-list">
+                                <div class="row-button">
+                                    <h3>Registered Users</h3>
+                                    <div class="buttons">
+                                        <Button id="addUserToggleBtn">Add New User</Button>
+                                    </div>
+                                </div>
+                                <table class="user-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Badge ID</th>
+                                            <th>Full Name</th>
+                                            <th>Department</th>
+                                            <th>Certification</th>
+                                            <th>Site</th>
+                                            <th>User Role</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userTableBody">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <section>
+                                <div class="user-formpage" id="user-form" style="display: none;">
+                                    <button class="backbutton" id="backFromAddUserBtn">&#10094; Back</button>
+                                    <h2>Add New User</h2>
+                                    <form class="user-form" action="/register" method="POST">
+                                        <fieldset>
+                                            <label for="firstname">First Name <input type="text" name="firstname" required></label>
+                                            <label for="lastname">Last Name <input type="text" name="lastname" required></label>
+                                            <label for="badgeid">BadgeID <input type="text" name="badgeid" required></label>
+                                            <label for="email">MCHP Email <input type="email" name="email" required></label>
+                                            <label for="password">Password <input type="password" name="password" required></label>
+                                        </fieldset>
+
+                                        <fieldset>
+                                            <button class="submit">Submit</button>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!--PROFILE VIEW-->
+
+                            <div class="profile-view" id="user-profile" class="content-section">
+                                <div class="buttons">
+                                    <button id="backToUsersBtn">&#10094; Back to Users</button>
+                                    <button id="editProfileToggleBtn">Edit User Profile</button>
+                                </div>
+                                <h1><span id="headerFirstname"></span>'s Profile</h1>
+
+                                <div class="profile">
+                                    <div class="viewmode" id="profileViewMode">
+                                        <img id="viewProfileImg" class="profile-img" src="./assets/images/M' Meldz 1.png" alt="Profile Picture">
+                                        <div class="profile-details">
+                                            <div>
+                                                <h3>First Name: <span id="viewFirstname"></span></span></h3>
+                                                <h3>Last Name: <span id="viewLastname"></span></h3>
+                                                <h3>BadgeID: <span id="viewBadgeId"></span></h3>
+                                                <h3>Email: <span id="viewEmail"></span></h3>
+                                                <h3>Site: <span id="viewSite"></span></h3>
+                                            </div>
+
+                                            <div>
+                                                <h3>Certification: <span id="viewCertification"></span></h3>
+                                                <h3>Position: <span id="viewPosition"></span></h3>
+                                                <h3>Department: <span id="viewDepartment"></span></h3>
+                                                <h3>Role: <span id="viewRole"></span></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="editmode" id="profileEditMode">
+                                        <img id="editProfileImg" class="profile-img" src="./assets/images/M' Meldz 1.png" alt="Profile Picture">
+                                        
+                                        <input type="file" id="profile-file-input" style="display: none;" accept="image/*">
+                                        
+                                        <div class="profile-details">
+                                            <div>
+                                                <div class="form-group"><label for="editFirstname">First Name:</label><input type="text" id="editFirstname"></div>
+                                                <div class="form-group"><label for="editLastname">Last Name:</label><input type="text" id="editLastname"></div>
+                                                <div class="form-group"><label for="editBadgeId">BadgeID:</label><input type="text" id="editBadgeId"></div>
+                                                <div class="form-group"><label for="editEmail">Email:</label><input type="text" id="editEmail"></div>
+                                                <div class="form-group"><label for="editSite">Site:</label>
+                                                    <select id="editSite">
+                                                        <option value="MPHIL1">MPHIL1</option>
+                                                        <option value="MPHIL3">MPHIL3</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div class="form-group"><label for="editCertification">Certification:</label>
+                                                    <select id="editCertification">
+                                                        <option value="Green Belt">Green Belt</option>
+                                                        <option value="Black Belt">Black Belt</option>
+                                                        <option value="None">None</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group"><label for="editPosition">Position:</label><input type="text" id="editPosition"></div>
+                                                <div class="form-group"><label for="editDepartment">Department:</label><input type="text" id="editDepartment"></div>
+                                                <div class="form-group"><label for="editRole">Role:</label>
+                                                    <select id="editRole">
+                                                        <option value="admin">Admin</option>
+                                                        <option value="user">User</option>
+                                                    </select>
+                                                </div>
+                                                <!-- Buttons Section -->
+                                                <div class="profile-button">
+                                                    <button class="save" id="saveProfileBtn">Save</button>
+                                                    <button class="cancel" id="cancelProfileBtn">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div id="settings" class="content-section">
                             <div class="header">
                                 <h1>Project</h1>
                             </div>
@@ -99,86 +290,8 @@
                                 </fieldset>
                             </form>
                         </div>
-
-                        <div id="users" class="content-section" style="display:none;">
-                            <div class="header">
-                                <h1>Users</h1>
-                            </div>
-
-                            <div class="user-list">
-                                <h3>Registered Users</h3>
-                                <table class="user-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Badge ID</th>
-                                            <th>Full Name</th>
-                                            <th>MCHP Email</th>
-                                            <th>User Role</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="userTableBody">
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <form class="member-form" action="/register" method="POST">
-                                <fieldset>
-                                    <label for="firstname">First Name <input type="text" name="firstname" required></label>
-                                    <label for="lastname">Last Name <input type="text" name="lastname" required></label>
-                                    <label for="badgeid">BadgeID <input type="text" name="badgeid" required></label>
-                                    <label for="email">MCHP Email <input type="email" name="email" required></label>
-                                    <label for="password">Password <input type="password" name="password" required></label>
-                                </fieldset>
-
-                                <fieldset>
-                                    <button class="submit">Submit</button>
-                                </fieldset>
-                            </form>
-                        </div>
-
-                        <!-- User Profile View Section -->
-                        <div id="user-profile" class="content-section" style="display: none;">
-                            <button id="backToUsersBtn">&larr; Back to Users</button>
-                            
-                            <div class="profile-card">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <h2>User Profile</h2>
-                                    <button id="editProfileBtn">Edit Profile</button>
-                                </div>
-
-                                <!-- VIEW MODE (Displayed by default) -->
-                                <div id="profileViewMode">
-                                    <p><strong>First Name:</strong> <span id="viewFirstname"></span></p>
-                                    <p><strong>Last Name:</strong> <span id="viewLastname"></span></p>
-                                    <p><strong>Badge ID:</strong> <span id="viewBadge"></span></p>
-                                    <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-                                    <p><strong>Role:</strong> <span id="viewRole"></span></p>
-                                </div>
-
-                                <!-- EDIT MODE (Hidden by default) -->
-                                <div id="profileEditMode" style="display: none;">
-                                    <p><strong>First Name:</strong> <input type="text" id="editFirstname"></p>
-                                    <p><strong>Last Name:</strong> <input type="text" id="editLastname"></p>
-                                    <p><strong>Badge ID:</strong> <input type="text" id="editBadge" readonly></p>
-                                    <p><strong>Email:</strong> <input type="email" id="editEmail"></p>
-                                    <p><strong>Role:</strong> 
-                                        <select id="editRole">
-                                            <option value="Admin">Admin</option>
-                                            <option value="User">User</option>
-                                        </select>
-                                    </p>
-                                    
-                                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                                        <button id="saveUserBtn">Save Changes</button>
-                                        <button id="cancelEditBtn" type="button">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                </div>
-            </section>
+                </div>       
         </main>
         <script src="./js/admin.js"></script>
         <script src="./js/global.js"></script>

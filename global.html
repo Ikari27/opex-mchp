@@ -7,6 +7,7 @@
         <meta name="description" content="Operational Excellence Portal">
         <meta name="keywords" content="Lean Six Sigma, Dashboard, Green Belt">
         <meta name="author" content="Mark Daniel Tabor">
+        <link rel="icon" href="/assets/images/logo2.png"/>
         <link href="./css/global.css" rel="stylesheet"/>
         <link href="./css/index.css" rel="stylesheet"/>
     </head>
@@ -46,7 +47,7 @@
                             <li id="admin"><a href="./admin.html" rel="prefetch">Admin</a></li>
                             <li><a href="./training.html" rel="prefetch">Trainings</a></li>
                             <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
-                            <li id="logout"><a href="/logout" rel="prefetch">Logout</a></li>
+                            <li id="logout"><a href="/logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -54,6 +55,17 @@
         </nav>
 
         <main>
+            <section id="editor-bar" style="padding: 10px 20px; background: #eee; text-align: right; display: none;">
+                <div id="editor-toolbar" style="display: none; margin-bottom: 5px;">
+                </div>
+                
+                <!-- New Add Button -->
+                <button id="add-btn" style="display: none; background: #007bff; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="addNewTextBlock()">+ Add New Text</button>
+                <button id="save-btn" style="display: none; background: #28a745; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="saveAllChanges()">Save All Changes</button>
+                <button id="cancel-btn" style="display: none; margin-left: 5px; background-color: #6c757d; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="cancelChanges()">Cancel</button>
+                <span id="status-msg" style="margin-left: 10px; font-weight: bold;"></span>
+            </section>
+
 
         </main>
         <script src="./js/index.js"></script>

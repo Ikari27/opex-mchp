@@ -1,85 +1,140 @@
+@import url('/css/global.css');
+
 .admin-page {
-    display: grid;
-    grid-template-columns: 20% 1fr;
+    display: flex;
+    min-height: 87vh;
+
+    border: 2px solid red;
 }
 
 .left-panel {
-    display: flex;
-    flex-direction: column;
+    width: 250px;
 
-    min-height: calc(100vh - 120px);
-    background-image: url("../assets/images/blue\ bg.jpg");  
+    background-image: url("../assets/images/blue\ bg.jpg");
 }
 
-.menu-item  {
-    padding: 20px;
-    color: #e7e9eb;
+
+.right-panel {
+    flex: 1;
+    margin: 20px;
+    padding: 16px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .left-panel {
+        display: none;
+
+        background-image: url("../assets/images/blue\ bg.jpg");
+    }
+
+    .right-panel {
+        flex: 1;
+        margin: 0px;
+        padding: 16px;
+    }
+}
+
+.menu-item {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 36px;
+    color: var(--white-color);
     font-weight: bold;
-    font-size: clamp(12px, 1.2vw, 60px);
+    font-size: clamp(1rem, 1.6vw, 24rem);
+    transition: all 0.3s ease;
+
     cursor: pointer;
 }
 
-
 .menu-item.active {
-    background-color: #ff502e;
+    background-color: var(--primary-red-color);
+}
+
+.content-section {
+    border: 2px solid red;
+    height: 100%;
 }
 
 .header {
-    margin: 20px;
+    font-size: clamp(0.9rem, 1.6vw, 24rem);
 }
 
-.header span {
-    color: #ff502e;
-    font-weight: bolder;
-}
-
-.project-form {
+.row-button {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.project-form fieldset {
-    padding: 20px;
+.buttons {
     display: flex;
-    flex-direction: column;
     gap: 20px;
-    border: none;
-    width: 45%;
+
+
+    justify-content: space-between;
 }
 
-.project-form label {
-    display: flex;
-    flex-direction: column;
+.buttons button {
+    padding: 10px;
+    background-color: var(--secondary-red-color);
+    border: none;
+    border-radius: 10px;
+    color: var(--white-color);
+    font-size: clamp(0.9rem, 1vw, 24rem);
+    font-weight: 400;
+
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.buttons button:hover {
+    background-color: var(--primary-red-color);
+    transform: scale(1.05);
     font-weight: bold;
 }
 
-.project-form input {
-    font-family: "Montserrat", sans-serif;
-    gap: 5px;
+.buttons button:active {
+    transform: scale(0.9);
+}
 
-    border: 2px solid;
-    height: 25px;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 16px;
+.backbutton {
+    width: 100%;
+    max-width: 80px;
+    height: 40px;
+
+    background: none;
+    border: none;
+    font-size: clamp(0.9rem, 1.2vw, 24rem);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.backbutton:hover {
+    color: var(--secondary-red-color);
+    transform: scale(1.05);
+    font-weight: bold;
+}
+
+.backbutton:active {
+    transform: scale(0.9);
 }
 
 .submit {
-    width: 250px;
-    height: 45px;
-    font-size: 18px;
-    font-family: "Montserrat", sans-serif;
-    border-radius: 15px;
+    padding: 10px;
+    background-color: var(--secondary-red-color);
     border: none;
-    background: #ff6541;
-    color: #e7e9eb;
-    cursor: pointer;
+    border-radius: 10px;
+    color: var(--white-color);
+    font-size: clamp(0.9rem, 1vw, 24rem);
+    font-weight: 400;
+
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .submit:hover {
+    background-color: var(--primary-red-color);
     transform: scale(1.05);
-    background: #ff2f15;
     font-weight: bold;
 }
 
@@ -87,39 +142,394 @@
     transform: scale(0.9);
 }
 
-.member-form fieldset {
-    padding: 20px;
+/* ================
+/ DASHBOARD
+/==================*/
+
+.firstname {
+    color: var(--primary-red-color);
+}
+
+.subheader {
+    margin: 20px;
+    font-size: clamp(1rem, 1.2vw, 24rem);
+}
+
+.cards-stats {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: left;
+
+    margin: 20px;
     gap: 20px;
-    border: none;
-    width: 50%;
 }
 
-.member-form label {
+.card-db {
+    border: 2px solid red;
+
     display: flex;
     flex-direction: column;
-    font-weight: bold;
+    justify-content: space-between;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: 350px;
+    padding: 20px;
+    height: 150px;
+
+    border-radius: 20px;
+    position: relative;
+    background-color: var(--quaternary-red-color);
+    box-shadow: 2px 2px 8px var(--primary-red-color);
 }
 
-.member-form input {
-    font-family: "Montserrat", sans-serif;
+.card-db h3 {
+    display: flex;
+    position: relative;
+    top: 0;
+    left: 0;
+
+    
+}
+
+.card-db h1 {
+    position: relative;
+    top: 0%;
+    left: 0;
+    font-size: clamp(2rem, 3vw, 24rem);
+
+    color: var(--primary-red-color);
+    text-align: center;
+}
+
+.card-db span {
+    margin-left: 5px;
+    font-size: clamp(2rem, 1.2vw, 24rem);
+}
+
+/* ================
+/ Projects
+/==================*/
+
+.project-list {
+    display:flex;
+    flex-direction: column;
+}
+
+.project-list h3 {
+    font-size: clamp(1rem, 2vw, 24rem);
+    margin: 20px;
+}
+
+.projects-table {
+    margin: 20px;
+}
+
+.projects-table th {
+    font-size: clamp(0.72rem, 1vw, 24rem);
+}
+
+.project-formpage {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    gap: 28px;
+}
+
+.project-formpage h2 {
+    margin-left: 20px;
+    font-size: clamp(1rem, 2vw, 24rem);
+}
+
+.project-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 40px;
+}
+
+
+.project-form fieldset {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 550px;
+    border: none;
+
+    gap: 10px;
+}
+
+.project-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(1rem, 1vw, 24rem);
+
+    font-weight: 600;
+}
+
+.project-form input {
+    background: var(--white-color);
     gap: 5px;
 
     border: 2px solid;
     height: 25px;
     border-radius: 10px;
     padding: 10px;
-    font-size: 16px;
+    font-size: clamp(1rem, 1vw, 24rem);
+}
+
+/* ================
+/ Users
+/==================*/
+
+.user-list h3 {
+    font-size: clamp(1rem, 2vw, 24rem);
+    margin: 20px;
 }
 
 .user-list {
-    display: flex;
+    display:flex;
     flex-direction: column;
-    padding: 20px;
 }
 
-.user-table{
+.user-list h3 {
+    font-size: clamp(1rem, 2vw, 24rem);
+    margin: 20px;
+}
+
+.user-table {
+    margin: 20px;
+}
+
+.user-table th {
     text-align: center;
+}
+
+.user-table tbody {
+    text-align: center;
+    font-weight: 600;
+    font-size: clamp(0.72rem, 1.2vw, 24rem);
+}
+
+.user-table th {
+    font-size: clamp(0.72rem, 1.5vw, 24rem);
+}
+
+.user-formpage {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    gap: 28px;
+}
+
+.user-formpage h2 {
+    margin-left: 20px;
+    font-size: clamp(1rem, 2vw, 24rem);
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 40px;
+}
+
+
+.user-form fieldset {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    max-width: 550px;
+    border: none;
+
+    gap: 10px;
+}
+
+.user-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(1rem, 1vw, 24rem);
+
+    font-weight: 600;
+}
+
+.user-form input {
+    background: var(--white-color);
+    gap: 5px;
+
+    border: 2px solid;
+    height: 25px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: clamp(1rem, 1vw, 24rem);
+}
+
+/* ================
+/ User's Profile
+/==================*/
+
+.profile-view {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.profile-view h1 {
+    font-size: clamp(1.5rem, 3vw, 24rem);
+}
+
+.profile-view span {
+    color: var(--primary-red-color);
+}
+
+.viewmode, .editmode {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    margin: 20px;
+}
+
+.viewmode img,.editmode img {
+    display: flex;
+    object-fit: contain;
+    flex-shrink: 1;
+    width: 100%;
+    max-width: 250px;
+    height: 100%;
+    max-height: 250px;
+    box-shadow: 0 4px 12px var(--secondary-red-color);
+    border: 2px solid var(--primary-red-color);
+    background-color: white;
+    border-radius: 10px;
+}
+
+.profile-details {
+    font-size: clamp(1rem, 1vw, 24rem);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+    gap: 60px;
+    flex: 1;
+}
+
+.profile-details div:not(.profile-button) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    
+    width: 100%;
+    max-width: 550px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group input {
+    background: var(--white-color);
+    gap: 5px;
+    width: 100%;
+    max-width: 1000px;
+
+    border: 2px solid;
+    height: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: clamp(1rem, 1vw, 24rem);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:hover {
+    border-color: var(--primary-red-color);
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.form-group select {
+    font-size: clamp(1rem, 1vw, 24rem);
+    border: 2px solid;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: var(--white-color);
+
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group select:hover {
+    border-color: var(--primary-red-color);
+}
+
+.form-group select:focus {
+    border-color: var(--primary-red-color);
+    box-shadow: 0 0 5px rgba(255, 77, 77, 0.3);
+}
+
+.profile-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.profile-button > .save {
+    width: 100px;
+}
+
+.profile-button > .cancel {
+    width: 100px;
+    background-color: var(--quaternary-red-color);
+    color: var(--primary-red-color);
+    border: 2px solid var(--primary-red-color);
+}
+
+.profile-button > .cancel:hover {
+    width: 100px;
+    background-color: var(--quaternary-red-color);
+    color: var(--primary-red-color);
+    border: 2px solid var(--primary-red-color);
+}
+
+.profile-button button {
+    padding: 10px;
+    background-color: var(--secondary-red-color);
+    border: none;
+    border-radius: 10px;
+    color: var(--white-color);
+    font-size: clamp(0.9rem, 1vw, 24rem);
+    font-weight: 400;
+
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.profile-button button:hover {
+    background-color: var(--primary-red-color);
+    transform: scale(1.05);
+    font-weight: bold;
+}
+
+.profile-button button:active {
+    transform: scale(0.9);
+}
+
+@media only screen and (max-width: 1000px) {
+    .viewmode img,.editmode img {
+        margin: 0 auto;
+    }
+
+    .viewmode, .editmode {
+        
+        margin: 0px;
+    }
 }

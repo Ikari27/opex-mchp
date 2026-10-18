@@ -1,0 +1,90 @@
+@import url('/css/global.css');
+
+header button {
+    margin: 24px;
+    height: 30px;
+    font-size: clamp(18px, 1vw, 32px);
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+header button:hover {
+    color: var(--secondary-red-color);
+    font-weight: bold;
+    transform:scale(1.1);
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header h1 {
+    margin-top: 80px;
+    color: var(--black-color);
+    font-size: clamp(24px, 1vw, 40px);
+}
+
+.header h2 {
+    color: var(--primary-red-color);
+    font-size: clamp(24px, 2.5vw, 40px);
+    margin-bottom: 52px;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login fieldset{
+    display: flex;
+    flex-direction: column;
+    border: none;
+    padding: 20px;
+    gap: 20px;
+}
+
+.login label{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.login input {
+    background: var(--white-color);
+    gap: 5px;
+
+    border: 2px solid;
+    height: 25px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: clamp(16px, 1vw, 32px);
+}
+
+.login button {
+    height: 45px;
+    font-size: 18px;
+    border-radius: 15px;
+    border: none;
+    background: var(--secondary-red-color);
+    color: var(--white-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login button:hover {
+    transform: scale(1.05);
+    background: var(--primary-red-color);
+    font-weight: bold;
+}
+
+.login button:active {
+    transform: scale(0.9);
+}
