@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: opex_db
+-- Host: localhost    Database: opex_db
 -- ------------------------------------------------------
 -- Server version	8.0.46
 
@@ -32,14 +32,14 @@ CREATE TABLE `users` (
   `role` enum('user','admin') DEFAULT 'user',
   `position` varchar(255) DEFAULT NULL,
   `department` varchar(255) DEFAULT NULL,
-  `certification` enum('Green Belt','Black Belt') DEFAULT NULL,
+  `certification` enum('Green Belt','Black Belt','None') DEFAULT 'None',
   `profile_picture` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `site` enum('MPHIL1','MPHIL3') DEFAULT 'MPHIL1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `badgeid` (`badgeid`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,6 +48,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Mark Daniel','Tabor','A80069','markdaniel.tabor@microchip.com','$2b$10$cyaUGo7hqyvqgUQXj3m4EeqYRVDH770ArzMc.elJ1.bJ0aMTc5Kqa','admin','','','None','./assets/uploads/1792257247063-IMG_7670ee.jpg','2026-10-16 13:01:33','MPHIL1'),(3,'Admin','Account','admin','admin@microchip.com','$2b$10$Yhfj.Vn5s0eaKGek8TmaYOuQChivwb8yAPpr.Zddm.xY.ueJi/.A6','admin','','','None','','2026-10-16 13:02:35','MPHIL1');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-16 18:15:46
+-- Dump completed on 2026-10-18 20:29:58
