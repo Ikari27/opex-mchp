@@ -1,10 +1,10 @@
-// ===================
-// SELECTION SELECTOR
-// ===================
+// ==========================================
+// 1. NAVIGATION & SECTION CONTROLLERS
+// ==========================================
 
 function showSection(sectionId, menuItem) {
-    // Hide all regular content sections AND the profile view section
-    document.querySelectorAll('.content-section, #user-profile').forEach(section => {
+    // Hide all regular content sections, user-profile, AND project-profile
+    document.querySelectorAll('.content-section, #user-profile, #project-profile').forEach(section => {
         section.style.display = 'none';
     });
 
@@ -25,9 +25,11 @@ function showSection(sectionId, menuItem) {
     }
 }
 
-// ===============
-// USER PROFILE
-// ===============
+
+// ==========================================
+// 2. USER PROFILE & USER MANAGEMENT
+// ==========================================
+
 let selectedUserId = null;
 
 // Fetch and render all registered users from MySQL into the table
@@ -75,7 +77,7 @@ async function openUserProfile(userId) {
         const user = await response.json();
         selectedUserId = user.id;
 
-        // Hide other sections, show profile section
+        // Hide other sections, show user-profile section
         document.querySelectorAll('.content-section, .profile-view').forEach(sec => sec.style.display = 'none');
         document.getElementById('user-profile').style.display = 'block';
 
@@ -93,7 +95,7 @@ async function openUserProfile(userId) {
         document.getElementById('viewSite').innerText = user.site || '-';
         document.getElementById('viewRole').innerText = user.role || 'User';
 
-        // CRITICAL FIX: Explicitly set or clear profile picture per user record
+        // Explicitly set or clear profile picture per user record
         const defaultImage = "./assets/images/default.jpg";
         const userImage = user.profile_picture ? user.profile_picture : defaultImage;
 
@@ -112,7 +114,7 @@ async function openUserProfile(userId) {
     }
 }
 
-// Mode Toggle Helpers
+// Mode Toggle Helpers (User Profile)
 function switchToEditMode() {
     document.getElementById('profileViewMode').style.display = 'none';
     document.getElementById('editProfileToggleBtn').style.display = 'none';
@@ -141,16 +143,150 @@ function addUser() {
     document.getElementById('user-list').style.display = 'none';
 }
 
+
+// ==========================================
+// 3. PROJECT MANAGEMENT & TABLES
+// ==========================================
+
+let selectedProjectId = null;
+
+// Fetch and render projects list into the table
+async function loadProjectTable() {
+    try {
+        const response = await fetch('/api/projects');
+        if (!response.ok) throw new Error("Failed to fetch projects");
+        
+        const projects = await response.json();
+        const tbody = document.getElementById("projectsTableBody");
+        if (!tbody) return;
+        
+        tbody.innerHTML = "";
+
+        projects.forEach(project => {
+            const tr = document.createElement("tr");
+            tr.style.cursor = "pointer";
+            
+            // Format monetary values for project_savings
+            const formattedSavings = project.project_savings 
+                ? `$${Number(project.project_savings).toLocaleString()}K` 
+                : '\$0';
+
+            tr.innerHTML = `
+                <td>${project.project_owner || ''}</td>
+                <td>${project.project_title || ''}</td>
+                <td>${project.project_impact || ''}</td>
+                <td>${formattedSavings}</td>
+                <td>${project.financial_impact || ''}</td>
+            `;
+
+            // When a project row is clicked, open its project profile view
+            tr.addEventListener("click", () => {
+                openProjectProfile(project.id);
+            });
+
+            tbody.appendChild(tr);
+        });
+    } catch (err) {
+        console.error("Error loading project table:", err);
+    }
+}
+
+// Mode Toggle Helpers (Project Profile)
+function switchProjectToViewMode() {
+    const viewMode = document.getElementById('projectViewMode');
+    const editMode = document.getElementById('projectEditMode');
+    const editToggleBtn = document.getElementById('editProjectToggleBtn');
+
+    if (viewMode) viewMode.style.display = 'flex'; // or 'block' based on your layout
+    if (editMode) editMode.style.display = 'none';
+    if (editToggleBtn) editToggleBtn.style.display = 'inline-block'; // or 'flex'
+}
+
+function ProjectEditMode() {
+    const viewMode = document.getElementById('projectViewMode');
+    const editMode = document.getElementById('projectEditMode');
+    const editToggleBtn = document.getElementById('editProjectToggleBtn');
+
+    if (viewMode) viewMode.style.display = 'none';
+    if (editMode) editMode.style.display = 'flex';
+    if (editToggleBtn) editToggleBtn.style.display = 'none';
+
+    // Populate the edit form inputs with the currently viewed text fields
+    document.getElementById('editProjectOwner').value = document.getElementById('viewProjectOwner').innerText;
+    document.getElementById('editProjectTitle').value = document.getElementById('viewProjectTitle').innerText;
+    document.getElementById('editProjectImpact').value = document.getElementById('viewImpact').innerText;
+    
+    // Clean the savings text by removing '\$', ',', 'K', etc. so it's just a raw number
+    const savingsText = document.getElementById('viewSavings').innerText;
+    document.getElementById('editSavings').value = savingsText.replace(/[^0-9.-]+/g, ""); 
+
+    document.getElementById('editQIcount').value = document.getElementById('viewQIcount').innerText;
+}
+
+// Fetch specific project data (including joined user info like department & certification)
+async function openProjectProfile(projectId) {
+    try {
+        const response = await fetch(`/api/projects/${projectId}`);
+        if (!response.ok) throw new Error("Failed to fetch project details");
+        
+        const project = await response.json();
+        selectedProjectId = project.id;
+
+        // Hide other sections and show project details view
+        document.querySelectorAll('.content-section, .project-view').forEach(sec => sec.style.display = 'none');
+        document.getElementById('project-profile').style.display = 'block';
+
+        // Force it to open in View Mode every time a project is clicked
+        switchProjectToViewMode();
+
+        // Populate View Mode Fields (matching your updated HTML structure)
+        document.getElementById('ProjectheaderFirstname').innerText = project.firstname || '';
+        document.getElementById('viewProjectOwner').innerText = project.project_owner || '';
+        document.getElementById('viewProjectTitle').innerText = project.project_title || '';
+        document.getElementById('viewImpact').innerText = project.project_impact || '';
+        document.getElementById('viewSavings').innerText = project.project_savings ? `$${Number(project.project_savings).toLocaleString()}K` : '\$0';
+        
+        // Dynamically pulled via owner match or direct fields
+        document.getElementById('viewProjectCertification').innerText = project.certification || 'None';
+        document.getElementById('viewProjectDepartment').innerText = project.department || 'N/A';
+        document.getElementById('viewQIcount').innerText = project.quality_improved || '0';
+
+        // Handle User Profile Picture from lookup
+        const defaultImage = "./assets/images/default.jpg";
+        const ownerImage = project.profile_picture ? project.profile_picture : defaultImage;
+        
+        const ownerImgElement = document.getElementById('viewProjectOwnerImg');
+        if (ownerImgElement) ownerImgElement.src = ownerImage;
+
+    } catch (err) {
+        console.error("Error opening project profile:", err);
+    }
+}
+
+function addUser() {
+    document.getElementById('user-form').style.display = 'flex';
+    document.getElementById('user-list').style.display = 'none';
+}
+
+// Show Add Project Form View
 function addProject() {
     document.getElementById('project-form').style.display = 'flex';
     document.getElementById('project-list').style.display = 'none';
 }
 
-// Consolidated Event Handlers Setup on DOM Load
-document.addEventListener('DOMContentLoaded', () => {
-    loadUserTable();
 
-    // Setup Click-to-Change Profile Picture in Edit Mode
+// ==========================================
+// 4. EVENT LISTENERS SETUP (DOM CONTENT LOADED)
+// ==========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initial Data Loads
+    loadUserTable();
+    loadProjectTable();
+
+    // ------------------------------------------
+    // User Profile Picture Handling
+    // ------------------------------------------
     const editImg = document.getElementById('editProfileImg');
     const fileInput = document.getElementById('profile-file-input');
 
@@ -172,34 +308,87 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Toggle Edit Mode when clicking "Edit User Profile" button
+    // ------------------------------------------
+    // Navigation / Form Toggle Buttons
+    // ------------------------------------------
     const editToggleBtn = document.getElementById('editProfileToggleBtn');
     if (editToggleBtn) {
         editToggleBtn.addEventListener('click', switchToEditMode);
     }
 
-    // Toggle add user Mode when clicking "add User Profile" button
     const addUserToggleBtn = document.getElementById('addUserToggleBtn');
     if (addUserToggleBtn) {
         addUserToggleBtn.addEventListener('click', addUser);
     }
 
-    // Toggle add project Mode when clicking "add User Profile" button
+    const ProjecteditToggleBtn = document.getElementById('editProjectToggleBtn');
+    if (ProjecteditToggleBtn) {
+        ProjecteditToggleBtn.addEventListener('click', ProjectEditMode);
+    }
+
     const addProjectToggleBtn = document.getElementById('addProjectToggleBtn');
     if (addProjectToggleBtn) {
         addProjectToggleBtn.addEventListener('click', addProject);
     }
 
-    // Cancel Edit Mode and return to View Mode
-    const cancelBtn = document.getElementById('cancelProfileBtn');
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', (e) => {
+    // Back Buttons
+    const backBtn = document.getElementById('backToUsersBtn');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            showSection('users', document.querySelectorAll('.left-panel .menu-item')[2]);
+        });
+    }
+
+    const ProjectbackBtn = document.getElementById('backToProjectsBtn');
+    if (ProjectbackBtn) {
+        ProjectbackBtn.addEventListener('click', () => {
+            showSection('project', document.querySelectorAll('.left-panel .menu-item')[1]);
+        });
+    }
+
+    const backFromAddUserBtn = document.getElementById('backFromAddUserBtn');
+    if (backFromAddUserBtn) {
+        backFromAddUserBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            document.getElementById('user-form').style.display = 'none';
+            document.getElementById('user-list').style.display = 'flex';
+        });
+    }
+
+    const backFromAddProjectBtn = document.getElementById('backFromAddProjectBtn');
+    if (backFromAddProjectBtn) {
+        backFromAddProjectBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('project-form').style.display = 'none';
+            document.getElementById('project-list').style.display = 'flex';
+        });
+    }
+
+    // ------------------------------------------
+    // Project Cancel Button Handling
+    // ------------------------------------------
+    const cancelProjectBtn = document.getElementById('cancelprojectBtn');
+    if (cancelProjectBtn) {
+        cancelProjectBtn.addEventListener('click', () => {
+            // Switch back to project view mode
+            switchProjectToViewMode();
+        });
+    }
+
+    // ------------------------------------------
+    // Project Cancel Button Handling
+    // ------------------------------------------
+    const cancelUserBtn = document.getElementById('cancelProfileBtn');
+    if (cancelUserBtn) {
+        cancelUserBtn.addEventListener('click', () => {
+            // Switch back to project view mode
             switchToViewMode();
         });
     }
 
-    // Save Profile Changes to MySQL Database via single FormData PUT request
+    // ------------------------------------------
+    // Profile Save Action
+    // ------------------------------------------
     const saveBtn = document.getElementById('saveProfileBtn');
     if (saveBtn) {
         saveBtn.addEventListener('click', async (e) => {
@@ -216,7 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('site', document.getElementById('editSite').value);
             formData.append('role', document.getElementById('editRole').value);
 
-            // Attach image file if selected
             if (fileInput && fileInput.files.length > 0) {
                 formData.append('imageFile', fileInput.files[0]);
             }
@@ -224,15 +412,15 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch(`/api/users/${selectedUserId}`, {
                     method: 'PUT',
-                    body: formData // Browser handles Content-Type boundary automatically for FormData
+                    body: formData
                 });
 
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.error || "Failed to update user");
 
                 alert("Profile updated successfully!");
-                loadUserTable();                 // Refresh the table list
-                openUserProfile(selectedUserId); // Refresh profile view mode with updated data
+                loadUserTable();
+                openUserProfile(selectedUserId);
             } catch (err) {
                 console.error("Save error:", err);
                 alert("Error saving profile changes.");
@@ -240,31 +428,80 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Back to Users button handler
-    const backBtn = document.getElementById('backToUsersBtn');
-    if (backBtn) {
-        backBtn.addEventListener('click', () => {
-            showSection('users', document.querySelectorAll('.left-panel .menu-item')[2]);
+    // ------------------------------------------
+    // Add New Project Form Submission Handling
+    // ------------------------------------------
+    const projectFormElement = document.querySelector('#project-form .project-form');
+    if (projectFormElement) {
+        projectFormElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(projectFormElement);
+            const projectData = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/projects', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(projectData)
+                });
+
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || 'Failed to add project');
+
+                alert('Project added successfully!');
+                projectFormElement.reset();
+                document.getElementById('project-form').style.display = 'none';
+                document.getElementById('project-list').style.display = 'flex';
+
+                // Refresh the project table list
+                loadProjectTable();
+
+            } catch (err) {
+                console.error('Error submitting project:', err);
+                alert(`Error: ${err.message}`);
+            }
         });
     }
 
-    // Back from Add User form handler (returns to user list view)
-    const backFromAddUserBtn = document.getElementById('backFromAddUserBtn');
-    if (backFromAddUserBtn) {
-        backFromAddUserBtn.addEventListener('click', (e) => {
+    // ------------------------------------------
+    // Project Save Action
+    // ------------------------------------------
+    const ProjectsaveBtn = document.getElementById('saveprojecteBtn');
+    if (ProjectsaveBtn) {
+        ProjectsaveBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            document.getElementById('user-form').style.display = 'none';
-            document.getElementById('user-list').style.display = 'flex';
-        });
-    }
 
-    // Back from Add Project form handler (returns to user list view)
-    const backFromAddProjectBtn = document.getElementById('backFromAddProjectBtn');
-    if (backFromAddProjectBtn) {
-        backFromAddProjectBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('project-form').style.display = 'none';
-            document.getElementById('project-list').style.display = 'flex';
+            const updatedData = {
+                project_owner: document.getElementById('editProjectOwner').value,
+                project_title: document.getElementById('editProjectTitle').value,
+                project_impact: document.getElementById('editProjectImpact').value,
+                project_savings: document.getElementById('editSavings').value,
+                quality_improved: document.getElementById('editQIcount').value
+            };
+
+            try {
+                const response = await fetch(`/api/projects/${selectedProjectId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || "Failed to update project");
+
+                alert("Project updated successfully!");
+                loadProjectTable();                  // Refresh project table
+                openProjectProfile(selectedProjectId); // Refresh project profile view
+            } catch (err) {
+                console.error("Save error:", err);
+                alert("Error saving project: " + err.message);
+            }
         });
     }
 });
+

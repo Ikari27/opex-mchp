@@ -3,8 +3,6 @@
 .admin-page {
     display: flex;
     min-height: 87vh;
-
-    border: 2px solid red;
 }
 
 .left-panel {
@@ -52,7 +50,6 @@
 }
 
 .content-section {
-    border: 2px solid red;
     height: 100%;
 }
 
@@ -222,9 +219,17 @@
 
 .projects-table {
     margin: 20px;
+    border-collapse: separate; /* Required for border-spacing to work */
+    border-spacing: 0 12px;   /* Syntax: (Horizontal Gap) (Vertical Row Gap) */
 }
 
 .projects-table th {
+    font-size: clamp(0.72rem, 1.3vw, 24rem);
+}
+
+.projects-table tbody {
+    text-align: center;
+    font-weight: 600;
     font-size: clamp(0.72rem, 1vw, 24rem);
 }
 
@@ -279,6 +284,175 @@
     font-size: clamp(1rem, 1vw, 24rem);
 }
 
+.project-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.project-button > .save {
+    width: 100px;
+}
+
+.project-button > .cancel {
+    width: 100px;
+    background-color: var(--quaternary-red-color);
+    color: var(--primary-red-color);
+    border: 2px solid var(--primary-red-color);
+}
+
+.project-button > .cancel:hover {
+    width: 100px;
+    background-color: var(--quaternary-red-color);
+    color: var(--primary-red-color);
+    border: 2px solid var(--primary-red-color);
+}
+
+.project-button button {
+    padding: 10px;
+    background-color: var(--secondary-red-color);
+    border: none;
+    border-radius: 10px;
+    color: var(--white-color);
+    font-size: clamp(0.9rem, 1vw, 24rem);
+    font-weight: 400;
+
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.project-button button:hover {
+    background-color: var(--primary-red-color);
+    transform: scale(1.05);
+    font-weight: bold;
+}
+
+.project-button button:active {
+    transform: scale(0.9);
+}
+
+/* ================
+/ User's Project
+/==================*/
+
+.project-view {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.project-view h1 {
+    font-size: clamp(1.5rem, 3vw, 24rem);
+    margin-top: 20px;
+}
+
+.project-view span {
+    color: var(--primary-red-color);
+}
+
+.viewmode, .editmode {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    margin: 20px;
+}
+
+.viewmode img,.editmode img {
+    display: flex;
+    object-fit: contain;
+    flex-shrink: 1;
+    width: 100%;
+    max-width: 250px;
+    height: 100%;
+    max-height: 250px;
+    box-shadow: 0 4px 12px var(--secondary-red-color);
+    border: 2px solid var(--primary-red-color);
+    background-color: white;
+    border-radius: 10px;
+}
+
+.project-details {
+    font-size: clamp(1rem, 1vw, 24rem);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+    gap: 60px;
+    flex: 1;
+}
+
+.project-details div:not(.project-button) {
+    display: flex;
+    flex-direction: column;
+    
+    flex-wrap: wrap;
+    
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group input {
+    background: var(--white-color);
+    gap: 5px;
+    width: 100%;
+    max-width: 1000px;
+
+    border: 2px solid;
+    height: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: clamp(1rem, 1vw, 24rem);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:hover {
+    border-color: var(--primary-red-color);
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.form-group select {
+    font-size: clamp(1rem, 1vw, 24rem);
+    border: 2px solid;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: var(--white-color);
+
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group select:hover {
+    border-color: var(--primary-red-color);
+}
+
+.form-group select:focus {
+    border-color: var(--primary-red-color);
+    box-shadow: 0 0 5px rgba(255, 77, 77, 0.3);
+}
+
+@media only screen and (max-width: 1000px) {
+    .viewmode img,.editmode img {
+        margin: 0 auto;
+    }
+
+    .viewmode, .editmode {
+        
+        margin: 0px;
+    }
+}
+
 /* ================
 / Users
 /==================*/
@@ -300,6 +474,9 @@
 
 .user-table {
     margin: 20px;
+
+    border-collapse: separate; 
+    border-spacing: 0 12px;
 }
 
 .user-table th {
@@ -423,7 +600,7 @@
     flex-wrap: wrap;
     
     width: 100%;
-    max-width: 550px;
+    max-width: 400px;
 }
 
 .form-group {

@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const session = require("express-session");
 const bcrypt = require('bcrypt');
+const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
 
@@ -29,9 +31,9 @@ app.use(express.static(path.join(__dirname, "..")));
 
 const db = mysql.createConnection({
     host: "localhost",
-    user: "root",
+    user: "admin",
     port: 3306,
-    password: "IkariRyoshi07272001",
+    password: "Administrator123!!!",
     database: "opex_db"
 });
 
@@ -59,7 +61,6 @@ app.post("/register", async (req, res) => {
                 console.error(err);
                 return res.send("Registration failed");
             }
-            req.session.user = { id: result.insertId, firstname, lastname, email, role: 'user' };
             res.redirect(previousPage);
         });
     } catch (error) {
@@ -74,7 +75,6 @@ app.post("/login", (req, res) => {
     
     db.query(sql, [badgeid], async (err, results) => {
         if (err || results.length === 0) {
-            // Return JSON instead of full-page text
             return res.status(400).json({ success: false, error: "Invalid Badge ID or Password" });
         }
 
@@ -82,7 +82,6 @@ app.post("/login", (req, res) => {
         const match = await bcrypt.compare(password, user.password);
 
         if (!match) {
-            // Return JSON instead of full-page text
             return res.status(400).json({ success: false, error: "Invalid Badge ID or Password" });
         }
 
@@ -94,7 +93,6 @@ app.post("/login", (req, res) => {
             role: user.role
         };
 
-        // Send a success response with the redirect URL instead of doing res.redirect()
         const redirectUrl = (user.role === 'admin') ? "/admin.html" : "/index.html";
         res.json({ success: true, redirectUrl: redirectUrl });
     });
@@ -136,7 +134,6 @@ app.listen(5500, () => {
 // FULL-PAGE WEB CONTENT API ROUTES
 // ==========================================
 
-// Get ALL content rows for the page at once
 app.get("/api/all-content", (req, res) => {
     const sql = "SELECT id, content FROM web_content";
     db.query(sql, (err, results) => {
@@ -152,7 +149,6 @@ app.get("/api/all-content", (req, res) => {
     });
 });
 
-// Update a specific row ID (Admins only)
 app.post("/api/content/update", (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(401).json({ success: false, error: "Unauthorized access" });
@@ -170,14 +166,12 @@ app.post("/api/content/update", (req, res) => {
     });
 });
 
-// Auto-Create or Update specific row ID from HTML data-id
 app.post("/api/content/create-specific", (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(401).json({ success: false, error: "Unauthorized" });
     }
 
     const { id, content } = req.body;
-    
     const sql = `
         INSERT INTO web_content (id, content) 
         VALUES (?, ?) 
@@ -194,12 +188,9 @@ app.post("/api/content/create-specific", (req, res) => {
 });
 
 // ====================
-// image/video editor
+// IMAGE/VIDEO EDITOR
 // ====================
 
-const multer = require('multer');
-
-// Configure storage for uploaded images
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, "../assets/uploads"));
@@ -210,9 +201,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-const fs = require('fs');
-
-// Video / Image Universal Upload Route (Admins Only)
 app.post("/api/content/upload-image", upload.single('imageFile'), (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(401).json({ success: false, error: "Unauthorized" });
@@ -225,7 +213,6 @@ app.post("/api/content/upload-image", upload.single('imageFile'), (req, res) => 
     const fileId = req.body.id;
     const newFilePath = `./assets/uploads/${req.file.filename}`;
 
-    // 1. Delete old file from server if it exists to save space
     const selectSql = "SELECT content FROM web_content WHERE id = ?";
     db.query(selectSql, [fileId], (err, results) => {
         if (!err && results.length > 0) {
@@ -233,12 +220,11 @@ app.post("/api/content/upload-image", upload.single('imageFile'), (req, res) => 
             if (oldPath && oldPath.startsWith('./assets/uploads/')) {
                 const fullOldPath = path.join(__dirname, "../", oldPath);
                 if (fs.existsSync(fullOldPath)) {
-                    fs.unlink(fullOldPath, () => {}); // Clean up old file
+                    fs.unlink(fullOldPath, () => {});
                 }
             }
         }
 
-        // 2. Save new file path to database
         const upsertSql = `
             INSERT INTO web_content (id, content) 
             VALUES (?, ?) 
@@ -256,10 +242,9 @@ app.post("/api/content/upload-image", upload.single('imageFile'), (req, res) => 
 });
 
 // =============
-// profile user
+// PROFILE USER
 // =============
 
-// GET a specific user's complete profile by database ID (Admins only)
 app.get("/api/users/:id", (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(401).json({ error: "Unauthorized" });
@@ -280,7 +265,6 @@ app.get("/api/users/:id", (req, res) => {
     });
 });
 
-// UPDATE a specific user's profile and profile picture in MySQL
 app.put("/api/users/:id", upload.single('imageFile'), (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(401).json({ success: false, error: "Unauthorized" });
@@ -289,12 +273,10 @@ app.put("/api/users/:id", upload.single('imageFile'), (req, res) => {
     const userId = req.params.id;
     const { firstname, lastname, badgeid, email, position, department, certification, site, role } = req.body;
 
-    // Check if a new profile image was uploaded
     let profilePicturePath = null;
     if (req.file) {
         profilePicturePath = `./assets/uploads/${req.file.filename}`;
 
-        // Optional: Remove old profile picture file from disk if it exists
         const selectOldSql = "SELECT profile_picture FROM users WHERE id = ?";
         db.query(selectOldSql, [userId], (err, results) => {
             if (!err && results.length > 0 && results[0].profile_picture) {
@@ -306,7 +288,6 @@ app.put("/api/users/:id", upload.single('imageFile'), (req, res) => {
         });
     }
 
-    // Build SQL query dynamically based on whether an image was uploaded
     let sql = `
         UPDATE users 
         SET firstname = ?, lastname = ?, badgeid = ?, email = ?, position = ?, department = ?, certification = ?, site = ?, role = ?
@@ -327,5 +308,229 @@ app.put("/api/users/:id", upload.single('imageFile'), (req, res) => {
             return res.status(500).json({ success: false, error: "Database update failed" });
         }
         res.json({ success: true, message: "Profile updated successfully!", profile_picture: profilePicturePath });
+    });
+});
+
+// ==========================================
+// PROJECT ROUTES
+// ==========================================
+
+app.get("/api/projects", (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+    
+    const sql = "SELECT id, project_owner, project_title, project_impact, project_savings, financial_impact, quality_improved, created_at, belt_certification FROM projects ORDER BY id DESC";
+    
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
+    });
+});
+
+// POST / Create a new project (Admins only) - Cleaned up duplicate
+app.post("/api/projects", (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ success: false, error: "Unauthorized" });
+    }
+
+    const { 
+        project_owner, 
+        project_title, 
+        project_impact, 
+        project_savings, 
+        financial_impact, 
+        quality_improved, 
+        belt_certification 
+    } = req.body;
+
+    const sql = `
+        INSERT INTO projects 
+        (project_owner, project_title, project_impact, project_savings, financial_impact, quality_improved, belt_certification) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+        project_owner || null, 
+        project_title || null, 
+        project_impact || null, 
+        project_savings || 0, 
+        financial_impact || null, 
+        quality_improved || null, 
+        belt_certification || null
+    ];
+
+    db.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Database insert error:", err);
+            return res.status(500).json({ success: false, error: "Database error while saving project" });
+        }
+        res.status(201).json({ success: true, message: "Project created successfully", projectId: result.insertId });
+    });
+});
+
+app.get("/api/projects/:id", (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const projectId = req.params.id;
+
+    const projectSql = "SELECT * FROM projects WHERE id = ?";
+    db.query(projectSql, [projectId], (err, projectResults) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        if (projectResults.length === 0) {
+            return res.status(404).json({ error: "Project not found" });
+        }
+
+        const project = projectResults[0];
+        const ownerName = project.project_owner || "";
+
+        const userSql = "SELECT profile_picture, firstname, certification, department FROM users WHERE CONCAT(firstname, ' ', lastname) LIKE ? OR firstname LIKE ? LIMIT 1";
+        
+        db.query(userSql, [`%${ownerName}%`, `%${ownerName}%`], (userErr, userResults) => {
+            let userInfo = { profile_picture: '', firstname: '', certification: 'None', department: 'N/A' };
+            
+            if (!userErr && userResults.length > 0) {
+                userInfo.profile_picture = userResults[0].profile_picture || '';
+                userInfo.firstname = userResults[0].firstname || '';
+                userInfo.certification = userResults[0].certification || 'None';
+                userInfo.department = userResults[0].department || 'N/A';
+            }
+
+            res.json({
+                ...project,
+                profile_picture: userInfo.profile_picture,
+                firstname: userInfo.firstname,
+                certification: userInfo.certification,
+                department: userInfo.department
+            });
+        });
+    });
+});
+
+app.put("/api/projects/:id", (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ success: false, error: "Unauthorized" });
+    }
+
+    const projectId = req.params.id;
+    
+    // Fallback to an empty object if req.body is undefined
+    const body = req.body || {};
+    const project_owner = body.project_owner;
+    const project_title = body.project_title;
+    const project_impact = body.project_impact;
+    const project_savings = body.project_savings;
+    const quality_improved = body.quality_improved;
+
+    const sql = `
+        UPDATE projects 
+        SET project_owner = ?, project_title = ?, project_impact = ?, project_savings = ?, quality_improved = ?
+        WHERE id = ?
+    `;
+    
+    const params = [
+        project_owner || null, 
+        project_title || null, 
+        project_impact || null, 
+        project_savings || 0, 
+        quality_improved || null,
+        projectId
+    ];
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            console.error("Database project update error:", err);
+            return res.status(500).json({ success: false, error: "Database update failed" });
+        }
+        res.json({ success: true, message: "Project updated successfully!" });
+    });
+});
+
+// =============================
+// GREENBELTS & BLACKBELTS API
+// =============================
+
+app.get("/api/greenbelts", (req, res) => {
+    const sql = `
+        SELECT id, firstname, lastname, position, department, certification, profile_picture, site 
+        FROM users 
+        WHERE certification LIKE '%Green Belt%'
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
+    });
+});
+
+app.get("/api/blackbelts", (req, res) => {
+    const sql = `
+        SELECT id, firstname, lastname, position, department, certification, profile_picture, site 
+        FROM users 
+        WHERE certification LIKE '%Black Belt%'
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
+    });
+});
+
+// ==========================================
+// PUBLIC USER PROFILE & PROJECTS API
+// ==========================================
+app.get("/api/public-profile/:id", (req, res) => {
+    const userId = req.params.id;
+
+    const userSql = "SELECT id, firstname, lastname, badgeid, email, position, department, certification, profile_picture, site, role FROM users WHERE id = ?";
+    
+    db.query(userSql, [userId], (err, userResults) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        if (userResults.length === 0) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const user = userResults[0];
+        const fullName = `${user.firstname || ''} ${user.lastname || ''}`.trim();
+
+        const projectsSql = "SELECT * FROM projects WHERE project_owner LIKE ? ORDER BY id ASC";
+        
+        db.query(projectsSql, [`%${fullName}%`], (projErr, projResults) => {
+            if (projErr) {
+                console.error("Database error:", projErr);
+                return res.status(500).json({ error: "Database error" });
+            }
+
+            let totalSavings = 0;
+            let totalQuality = 0;
+            projResults.forEach(project => {
+                totalSavings += parseFloat(project.project_savings || 0);
+                totalQuality += parseInt(project.quality_improved || 0);
+            });
+
+            res.json({
+                user: user,
+                projects: projResults,
+                totals: {
+                    savings: totalSavings,
+                    quality: totalQuality
+                }
+            });
+        });
     });
 });

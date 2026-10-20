@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Profile | Operational Excellence Portal</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Operational Excellence Portal">
+        <meta name="keywords" content="Lean Six Sigma, Dashboard, Green Belt">
+        <meta name="author" content="Mark Daniel Tabor">
+        <link rel="icon" href="/assets/images/logo2.png"/>
+        <link href="./css/global.css" rel="stylesheet"/>
+        <link href="./css/profile.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <nav>
+            <div class="navbar">
+                <div class="brand">
+                    <img class="logo" src="./assets/images/logo2.png" alt="logo">
+                    <span class="name"><a href="./index.html" rel="prefetch">OPERATIONAL EXCELLENCE</a></span>
+                </div>
+
+                <ul class="nav-menu">
+                    <li><a href="./index.html" rel="prefetch">Home</a></li>
+
+                    <li class="dp"><a>Experts</a>
+                        <ul class="dp-list">
+                            <li><a href="./coaches.html" rel="prefetch">Coaches</a></li>
+                            <li><a href="./greenbelts.html" rel="prefetch">Lean Six Sigma Green Belts</a></li>
+                            <li><a href="./blackbelts.html" rel="prefetch">Lean Six Sigma Black Belts</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>Knowledge Center</a>
+                        <ul class="dp-list">
+                            <li><a href="./future.html" rel="prefetch">Business Metrics of OpEx</a></li>
+                            <li><a href="./lean.html" rel="prefetch">Lean Six Sigma</a></li>
+                            <li><a href="./cit.html" rel="prefetch">Lean CIT</a></li>
+                            <li><a href="./about.html" rel="prefetch">About</a></li>                         
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>LSS Hub</a>
+                        <ul class="dp-list">
+                            <div id="hello" class="greeting">Hello! <span class="firstname"></span></div>
+                            <li id="login"><a href="./login.html" rel="prefetch">Login</a></li>
+                            <li id="admin"><a href="./admin.html" rel="prefetch">Admin</a></li>
+                            <li><a href="./training.html" rel="prefetch">Trainings</a></li>
+                            <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
+                            <li id="logout"><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+            <section>
+
+                <div class="back">
+                    <button id="back">&#10094; Back</button>
+                </div>
+                <div class="profileheader">
+                    <h1><span id="headerFirstname"></span>'s Profile</h1>
+                </div>
+
+                <!-- Loading Spinner Overlay -->
+                <div id="loadingSpinner" style="display: flex; justify-content: center; align-items: center; height: 300px;">
+                    <div class="spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid #ff4d4d; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+                </div>
+
+                <!-- Make sure your profile content wrapper has an ID so we can hide it while loading -->
+                <div id="profileContent" style="display: none;">
+                    <div class="profile">
+                        <img id="viewProfileImg" class="profile-img" alt="Profile Picture">
+                        <div class="profile-details">
+                            <div>
+                                <h3>First Name: </h3>
+                                <span id="viewFirstname"></span></span>
+                                <h3>Last Name: </h3>
+                                <span id="viewLastname"></span>
+                                <h3>BadgeID: </h3>
+                                <span id="viewBadgeId"></span>
+                                <h3>Email: </h3>
+                                <span id="viewEmail"></span>
+                            </div>
+
+                            <div>
+                                <h3>Certification: </h3>
+                                <span id="viewCertification"></span>
+                                <h3>Position: </h3>
+                                <span id="viewPosition"></span>
+                                <h3>Department: </h3>
+                                <span id="viewDepartment"></span>
+                                <h3>Site: </span></h3>
+                                <span id="viewSite"></span>
+                            </div>
+                        </div>
+
+                        <div class="divider">
+                            <div class="financial-card">
+                                <div class="title">
+                                    <h1>Financial Impact</h1>
+                                </div>
+                                <div class="content">
+                                    <h1 id="viewFinancial"><!--total-->
+                                        
+                                    </h1>
+                                </div>
+                            </div>
+
+                            <div class="quality-card">
+                                <div class="title">
+                                    <h1>Quality Improved</h1>
+                                </div>
+                                <div class="content">
+                                    <h1 id="viewQuality"><!--total-->
+                                        
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="projects-header">
+                        <h1>Projects</h1>
+                    </div>
+
+                    <div class="project-cards">
+                        
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script src="./js/profile.js"></script>
+        <script src="./js/global.js"></script>
+    </body>
+    <footer>© 2026 Microchip Philippines</footer>
+</html>

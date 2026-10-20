@@ -258,10 +258,6 @@ body {
     color: var(--black-color);
 }
 
-body {
-    background: var(--white-color);
-}
-
 .greeting {
     padding: 5px 5px;
     text-align: left;
@@ -272,3 +268,7 @@ body {
     font-weight: bold;
 }
 
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

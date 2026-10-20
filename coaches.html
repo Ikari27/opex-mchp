@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Coaches | Operational Excellence Portal</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Operational Excellence Portal">
+        <meta name="keywords" content="Lean Six Sigma, Dashboard, Green Belt">
+        <meta name="author" content="Mark Daniel Tabor">
+        <link rel="icon" href="/assets/images/logo2.png"/>
+        <link href="./css/global.css" rel="stylesheet"/>
+        <link href="./css/coaches.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <nav>
+            <div class="navbar">
+                <div class="brand">
+                    <img class="logo" src="./assets/images/logo2.png" alt="logo">
+                    <span class="name"><a href="./index.html" rel="prefetch">OPERATIONAL EXCELLENCE</a></span>
+                </div>
+
+                <ul class="nav-menu">
+                    <li><a href="./index.html" rel="prefetch">Home</a></li>
+
+                    <li class="dp"><a>Experts</a>
+                        <ul class="dp-list">
+                            <li><a href="./coaches.html" rel="prefetch">Coaches</a></li>
+                            <li><a href="./greenbelts.html" rel="prefetch">Lean Six Sigma Green Belts</a></li>
+                            <li><a href="./blackbelts.html" rel="prefetch">Lean Six Sigma Black Belts</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>Knowledge Center</a>
+                        <ul class="dp-list">
+                            <li><a href="./future.html" rel="prefetch">Business Metrics of OpEx</a></li>
+                            <li><a href="./lean.html" rel="prefetch">Lean Six Sigma</a></li>
+                            <li><a href="./cit.html" rel="prefetch">Lean CIT</a></li>
+                            <li><a href="./about.html" rel="prefetch">About</a></li>                         
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>LSS Hub</a>
+                        <ul class="dp-list">
+                            <div id="hello" class="greeting">Hello! <span class="firstname"></span></div>
+                            <li id="login"><a href="./login.html" rel="prefetch">Login</a></li>
+                            <li id="admin"><a href="./admin.html" rel="prefetch">Admin</a></li>
+                            <li><a href="./training.html" rel="prefetch">Trainings</a></li>
+                            <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
+                            <li id="logout"><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+            <section id="editor-bar" style="padding: 10px 20px; background: #eee; text-align: right; display: none;">
+                <div id="editor-toolbar" style="display: none; margin-bottom: 5px;">
+                </div>
+                
+                <!-- New Add Button -->
+                <button id="add-btn" style="display: none; background: #007bff; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="addNewTextBlock()">+ Add New Text</button>
+                <button id="save-btn" style="display: none; background: #28a745; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="saveAllChanges()">Save All Changes</button>
+                <button id="cancel-btn" style="display: none; margin-left: 5px; background-color: #6c757d; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="cancelChanges()">Cancel</button>
+                <span id="status-msg" style="margin-left: 10px; font-weight: bold;"></span>
+            </section>
+
+            <section>
+                <div class="jumbotron">
+                    <div class="image">
+                        <img data-id="38" class="editable-img" src="./assets/images/M' Thess.png" alt="">
+                        <input type="file" id="image-file-input-38" style="display: none;" accept="image/*" onchange="uploadImage(38, this)">
+                    </div>
+
+                    <div class="caption">
+                        <h2 data-id="36" class="editable">Coaching & Consulting</h2>
+                        <p data-id="37" class="editable">Turn ideas into impact with personalized coaching, project support, <br> and data-driven improvement strategies.</p>
+                        <div class="button">
+                            <button>Start Project Coaching   →</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="coaches">
+                    <div class="coaches-title">
+                        <h1>Coaches</h1>
+                    </div>
+
+                    <div class="site-selector">
+                        <button class="active" onclick="showGallery('mphil1', this)">MPHIL1</button>
+                        <button onclick="showGallery('mphil3', this)">MPHIL3</button>
+                    </div>
+
+                    <div id="loadingSpinner" style="display: flex; justify-content: center; align-items: center; height: 300px;">
+                        <div class="spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid #ff4d4d; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+                    </div>
+
+                    <div id="Content" style="display: none;">
+                        <div class="coaches-gallery active" id="mphil1">
+                            <div class="coachrow" id="mphil1-container">
+                                
+                            </div>
+                        </div>
+
+                        <div class="coachrow" id="mphil3-container">
+                            
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script src="./js/coaches.js"></script>
+        <script src="./js/global.js"></script>
+    </body>
+    <footer>© 2026 Microchip Philippines</footer>
+</html>

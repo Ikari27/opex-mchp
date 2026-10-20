@@ -1,3 +1,28 @@
+//===========
+// JUMBOTRON
+//===========
+
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.jumbotron .carousel-item');
+    if (slides.length === 0) return;
+
+    let currentIndex = 0;
+    const intervalTime = 3000; // 3 seconds per slide
+
+    const slideInterval = setInterval(() => {
+        slides[currentIndex].classList.remove('active');
+        currentIndex++;
+
+        if (currentIndex >= slides.length - 1) {
+            currentIndex = slides.length - 1;
+            slides[currentIndex].classList.add('active');
+            clearInterval(slideInterval); // Stops on the last slide
+        } else {
+            slides[currentIndex].classList.add('active');
+        }
+    }, intervalTime);
+});
+
 //==========
 // CAROUSEL
 //==========
