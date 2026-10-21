@@ -22,11 +22,9 @@ async function loadUserProfile(userId) {
         const totals = data.totals || { savings: 0, quality: 0 };
 
         // 1. Populate Text Details
-        document.getElementById('headerFirstname').textContent = user.firstname || 'User';
-        document.getElementById('viewFirstname').textContent = user.firstname || '';
+        document.getElementById('headerFirstname').textContent = user.nickname || 'User';
+        document.getElementById('viewFirstname').textContent = user.nickname || user.firstname || '';
         document.getElementById('viewLastname').textContent = user.lastname || '';
-        document.getElementById('viewBadgeId').textContent = user.badgeid || '';
-        document.getElementById('viewEmail').textContent = user.email || '';
         document.getElementById('viewSite').textContent = user.site || '';
         document.getElementById('viewCertification').textContent = user.certification || '';
         document.getElementById('viewPosition').textContent = user.position || '';

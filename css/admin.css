@@ -184,8 +184,6 @@
     position: relative;
     top: 0;
     left: 0;
-
-    
 }
 
 .card-db h1 {
@@ -217,20 +215,75 @@
     margin: 20px;
 }
 
+.table-container {
+    display: flex;
+    height: 500px;
+
+}
+
 .projects-table {
+    display: flex;
+    flex-direction: column;
     margin: 20px;
-    border-collapse: separate; /* Required for border-spacing to work */
-    border-spacing: 0 12px;   /* Syntax: (Horizontal Gap) (Vertical Row Gap) */
+    border: 8px solid var(--primary-red-color);
+    border-radius: 20px;
+    width: calc(100% - 40px); /* Accounts for horizontal margins */
+    
+    /* Give the table a fixed or calculated height to fill the screen space */
+    height: calc(100vh - 220px); /* Adjust the 220px depending on header/padding height */
+}
+
+
+.projects-table thead {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0; /* Prevents header from shrinking */
+}
+
+.projects-table thead tr {
+    display: flex;
+    width: 100%;
 }
 
 .projects-table th {
-    font-size: clamp(0.72rem, 1.3vw, 24rem);
+    flex: 1;
+    text-align: center;
+    font-size: clamp(0.72rem, 1.3vw, 1.2rem);
+    border-bottom: 3px solid var(--primary-red-color);
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .projects-table tbody {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto; /* Enables vertical scrolling when content overflows */
+    width: 100%;
+
     text-align: center;
     font-weight: 600;
-    font-size: clamp(0.72rem, 1vw, 24rem);
+    font-size: clamp(0.72rem, 1vw, 1.2rem);
+}
+
+.projects-table tbody > tr {
+    display: flex;
+    width: 100%;
+    min-height: 50px;
+    flex-shrink: 0;
+}
+
+.projects-table td {
+    flex: 1; /* Matches the th flex sizing to keep columns aligned */
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.projects-table tbody > tr:hover {
+    background-color: var(--quaternary-red-color);
 }
 
 .project-formpage {
@@ -473,24 +526,68 @@
 }
 
 .user-table {
+    display: flex;
+    flex-direction: column;
     margin: 20px;
+    border: 8px solid var(--primary-red-color);
+    border-radius: 20px;
+    width: calc(100% - 40px); /* Accounts for horizontal margins */
+    
+    /* Give the table a fixed or calculated height to fill the screen space */
+    height: calc(100vh - 220px); /* Adjust the 220px depending on  header/padding height */
+}
 
-    border-collapse: separate; 
-    border-spacing: 0 12px;
+/* Make header a flex row so its children/cells stretch nicely */
+.user-table thead {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0; /* Prevents header from shrinking */
+}
+
+.user-table thead tr {
+    display: flex;
+    width: 100%;
 }
 
 .user-table th {
+    flex: 1; /* Distributes column widths equally (or use specific widths) */
     text-align: center;
+    font-size: clamp(0.72rem, 1.3vw, 1.2rem); /* Fixed max font size */
+    border-bottom: 3px solid var(--primary-red-color);
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .user-table tbody {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto; /* Enables vertical scrolling when content overflows */
+    width: 100%;
+
     text-align: center;
     font-weight: 600;
-    font-size: clamp(0.72rem, 1.2vw, 24rem);
+    font-size: clamp(0.72rem, 1vw, 1.2rem);
 }
 
-.user-table th {
-    font-size: clamp(0.72rem, 1.5vw, 24rem);
+.user-table tbody > tr {
+    display: flex;
+    width: 100%;
+    min-height: 50px;
+    flex-shrink: 0;
+}
+
+.user-table td {
+    flex: 1; /* Matches the th flex sizing to keep columns aligned */
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.user-table tbody > tr:hover {
+    background-color: var(--quaternary-red-color);
 }
 
 .user-formpage {

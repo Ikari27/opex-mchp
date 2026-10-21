@@ -35,7 +35,7 @@ async function fetchBlackbelts() {
         users.forEach(user => {
             // Determine image path (fallback to sample if profile_picture is missing)
             const imgSrc = user.profile_picture ? user.profile_picture : './assets/images/default.jpg';
-            const fullName = `${user.firstname || ''} ${user.lastname || ''}`.trim();
+            const fullName = `${user.nickname || user.firstname || ''} ${user.lastname || ''}`.trim();
             const position = user.position || '';
             const department = user.department || '';
 

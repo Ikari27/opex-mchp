@@ -75,11 +75,13 @@
 }
 
 .gb-card {
+    display: flex;
+    flex-direction: column;
     height: 400px;
     border-radius: 15px;
     flex-grow: 0;
     flex-shrink: 0;
-    flex-basis: 300px;
+    width: 300px;
     overflow: hidden;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;

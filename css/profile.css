@@ -1,8 +1,4 @@
 @import url('/css/global.css');
-body {
-    background-image: url(../assets/images/427157880_64ab9b4a-6b74-4ab2-aec3-93f71cf1e609.jpg);
-    object-fit:inherit;
-}
 
 .back button {
     width: 100%;
@@ -57,12 +53,23 @@ body {
 
 .profile-details {
     display: flex;
+    flex-direction: column;
     flex: 1;
 
     gap: 20px;
 }
 
-.profile-details div {
+.username {
+    display: flex;
+    gap: 10px;
+}
+
+.username span {
+    color: var(--primary-red-color);
+    font-size: clamp(2rem, 3vw, 24rem);
+}
+
+.profile-details div:not(.username) {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -75,7 +82,7 @@ body {
     gap: 20px;
 
     width: 100%;
-    max-width: 400px;
+    max-width: 700px;
 }
 
 .financial-card {

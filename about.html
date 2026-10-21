@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>About | Operational Excellence Portal</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Operational Excellence Portal">
+        <meta name="keywords" content="Lean Six Sigma, Dashboard, Green Belt">
+        <meta name="author" content="Mark Daniel Tabor">
+        <link rel="icon" href="/assets/images/logo2.png"/>
+        <link href="./css/global.css" rel="stylesheet"/>
+        <link href="./css/about.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <nav>
+            <div class="navbar">
+                <div class="brand">
+                    <img class="logo" src="./assets/images/logo2.png" alt="logo">
+                    <span class="name"><a href="./index.html" rel="prefetch">OPERATIONAL EXCELLENCE</a></span>
+                </div>
+
+                <ul class="nav-menu">
+                    <li><a href="./index.html" rel="prefetch">Home</a></li>
+
+                    <li class="dp"><a>Experts</a>
+                        <ul class="dp-list">
+                            <li><a href="./coaches.html" rel="prefetch">Coaches</a></li>
+                            <li><a href="./trainers.html" rel="prefetch">Trainers</a></li>
+                            <li><a href="./greenbelts.html" rel="prefetch">Lean Six Sigma Green Belts</a></li>
+                            <li><a href="./blackbelts.html" rel="prefetch">Lean Six Sigma Black Belts</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>Knowledge Center</a>
+                        <ul class="dp-list">
+                            <li><a href="./future.html" rel="prefetch">Business Metrics of OpEx</a></li>
+                            <li><a href="./lean.html" rel="prefetch">Lean Six Sigma</a></li>
+                            <li><a href="./cit.html" rel="prefetch">Lean CIT</a></li>
+                            <li><a href="./about.html" rel="prefetch">About</a></li>                         
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>LSS Hub</a>
+                        <ul class="dp-list">
+                            <div id="hello" class="greeting">Hello! <span class="firstname"></span></div>
+                            <li id="login"><a href="./login.html" rel="prefetch">Login</a></li>
+                            <li id="admin"><a href="./admin.html" rel="prefetch">Admin</a></li>
+                            <li><a href="./training.html" rel="prefetch">Trainings</a></li>
+                            <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
+                            <li id="logout"><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+            <section id="editor-bar" style="padding: 10px 20px; background: #eee; text-align: right; display: none;  position: sticky; top: 70px; z-index: 100;">
+                <div id="editor-toolbar" style="display: none; margin-bottom: 5px;">
+                </div>
+                
+                <!-- New Add Button -->
+                <button id="add-btn" style="display: none; background: #007bff; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="addNewTextBlock()">+ Add New Text</button>
+                <button id="save-btn" style="display: none; background: #28a745; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="saveAllChanges()">Save All Changes</button>
+                <button id="cancel-btn" style="display: none; margin-left: 5px; background-color: #6c757d; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="cancelChanges()">Cancel</button>
+                <span id="status-msg" style="margin-left: 10px; font-weight: bold;"></span>
+            </section>
+
+            <section>
+                <div class="orgchart">
+                    <div class="orgtitle">
+                        <h2 data-id="82" class="editable">The Team behind Operational Excellence</h2>
+                    </div>
+                    <div class="deptgrid">
+                        <div class="dept">
+                            <div class="grid">
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="83" class="editable">Project Execution</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="84" class="editable">Resources</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="85" class="editable">Process Ownership</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 data-id="86" class="editable">Operations</h2>                            
+                        </div>
+
+                        <div class="dept">
+                            <div class="grid">
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="86" class="editable">Technical Expertise</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="87" class="editable">Automation</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="88" class="editable">NPI Support</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 data-id="89" class="editable">Engineering</h2>                            
+                        </div>
+
+                        <div class="dept">
+                            <div class="grid">
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="90" class="editable">Defect Reduction</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="91" class="editable">Customer Requirement</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 data-id="92" class="editable">Quality</h2>                            
+                        </div>
+
+                        <div class="dept">
+                            <div class="grid">
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="93" class="editable">Inventory Optimization</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="94" class="editable">Planning</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 data-id="95" class="editable">Supply Chain</h2>                            
+                        </div>
+
+                        <div class="dept">
+                            <div class="grid">
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="96" class="editable">Training</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="97" class="editable">Data Systems</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="98" class="editable">Digital Tools</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 data-id="99" class="editable">HR/IT</h2>                            
+                        </div>
+
+                        <div class="dept">
+                            <div class="grid">
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="100" class="editable">Project Execution</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="101" class="editable">Maintenance</p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        
+                                        <p data-id="102" class="editable">IoT Initiatives</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 data-id="103" class="editable">Facilities</h2>                            
+                        </div>
+                    </div>
+                    
+                    <div class="line2"></div>
+                    <div class="line1"></div>
+
+                    <div class="deptgrid3">
+                        <div class="dept3">
+                            <div class="grid">
+                                <div class="card">
+                                    <img data-id="114" class="editable-img" alt="image">
+                                    <input type="file" id="image-file-input-114" style="display: none;" accept="image/*" onchange="uploadImage(114, this)">
+                                    <div class="card-caption">
+                                        <h2 data-id="104" class="editable">Donald Cruz</h2>
+                                        <p data-id="105" class="editable">Manager</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="line3"></div>
+
+                            <div class="grid">
+                                <div class="card">
+                                    <img data-id="113" class="editable-img" alt="image">
+                                    <input type="file" id="image-file-input-113" style="display: none;" accept="image/*" onchange="uploadImage(113, this)">
+                                    <div class="card-caption">
+                                        <h2 data-id="106" class="editable">PMO/SPC</h2>
+                                        <p data-id="107" class="editable">Senior Engineer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="deptgrid2">
+                        <div class="dept2">
+                            <div class="grid">
+                                <div class="card">
+                                    <img data-id="112" class="editable-img" alt="image">
+                                    <input type="file" id="image-file-input-112" style="display: none;" accept="image/*" onchange="uploadImage(112, this)">
+                                    <div class="card-caption">
+                                        <h2 data-id="108" class="editable">Imelda Cruz</h2>
+                                        <p data-id="109" class="editable">Senior Manager Operations</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="deptgrid2">
+                        <div class="dept2">
+                            <div class="grid">
+                                <div class="card">
+                                    
+                                    <div class="card-caption">
+                                        <h2 data-id="110" class="editable">Greg Fisher</h2>
+                                        <p data-id="111" class="editable">Appointed Vice President</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="quality">
+                    <div class="quality-title">
+                        <h1>House of Quality</h1>
+                    </div>
+                    
+                    <div class="housequality">
+                        <img src="/assets/images/Designer (1).png" alt="house">
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script src="./js/about.js"></script>
+        <script src="./js/global.js"></script>
+    </body>
+    <footer>© 2026 Microchip Philippines</footer>
+</html>

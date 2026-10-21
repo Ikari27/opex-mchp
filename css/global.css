@@ -3,6 +3,10 @@ font-family: "Montserrat";
 src: url("../assets/fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 :root {
     --primary-red-color: #ff502e;
     --secondary-red-color: #ff8d6b;

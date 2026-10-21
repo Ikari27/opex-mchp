@@ -26,6 +26,7 @@
                     <li class="dp"><a>Experts</a>
                         <ul class="dp-list">
                             <li><a href="./coaches.html" rel="prefetch">Coaches</a></li>
+                            <li><a href="./trainers.html" rel="prefetch">Trainers</a></li>
                             <li><a href="./greenbelts.html" rel="prefetch">Lean Six Sigma Green Belts</a></li>
                             <li><a href="./blackbelts.html" rel="prefetch">Lean Six Sigma Black Belts</a></li>
                         </ul>
@@ -78,7 +79,7 @@
 
                         <div id="dashboard" class="content-section">
                             <div class="header">
-                                <h1>Hello, <span class="firstname">daniel</span></h1>
+                                <h1>Hello, <span class="firstname"></span></h1>
                             </div>
 
                             <div class="subheader">
@@ -110,19 +111,21 @@
                                         <Button id="addProjectToggleBtn">Add New Project</Button>
                                     </div>
                                 </div>
-                                <table class="projects-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Project Owner</th>
-                                            <th>Project Title</th>
-                                            <th>Project Impact</th>
-                                            <th>Savings/Year</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="projectsTableBody">
-                                        
-                                    </tbody>
-                                </table>
+                                <div class="table-container">
+                                    <table class="projects-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Project Owner</th>
+                                                <th>Project Title</th>
+                                                <th>Project Impact</th>
+                                                <th>Savings/Year</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="projectsTableBody">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <section>
@@ -208,21 +211,23 @@
                                         <Button id="addUserToggleBtn">Add New User</Button>
                                     </div>
                                 </div>
-                                <table class="user-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Badge ID</th>
-                                            <th>Full Name</th>
-                                            <th>Department</th>
-                                            <th>Certification</th>
-                                            <th>Site</th>
-                                            <th>User Role</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="userTableBody">
-                                        
-                                    </tbody>
-                                </table>
+                                <div class="table-container">
+                                    <table class="user-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Badge ID</th>
+                                                <th>Full Name</th>
+                                                <th>Department</th>
+                                                <th>Certification</th>
+                                                <th>Site</th>
+                                                <th>User Role</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="userTableBody">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <section>
@@ -262,6 +267,7 @@
                                             <div>
                                                 <h3>First Name: <span id="viewFirstname"></span></span></h3>
                                                 <h3>Last Name: <span id="viewLastname"></span></h3>
+                                                <h3>Nickname: <span id="viewNickname"></span></h3>
                                                 <h3>BadgeID: <span id="viewBadgeId"></span></h3>
                                                 <h3>Email: <span id="viewEmail"></span></h3>
                                                 <h3>Site: <span id="viewSite"></span></h3>
@@ -271,6 +277,7 @@
                                                 <h3>Certification: <span id="viewCertification"></span></h3>
                                                 <h3>Position: <span id="viewPosition"></span></h3>
                                                 <h3>Department: <span id="viewDepartment"></span></h3>
+                                                <h3>Trainer/Coach: <span id="viewTrainerCoach"></span></h3>
                                                 <h3>Role: <span id="viewRole"></span></h3>
                                             </div>
                                         </div>
@@ -285,6 +292,7 @@
                                             <div>
                                                 <div class="form-group"><label for="editFirstname">First Name:</label><input type="text" id="editFirstname"></div>
                                                 <div class="form-group"><label for="editLastname">Last Name:</label><input type="text" id="editLastname"></div>
+                                                <div class="form-group"><label for="editNickname">Nickname:</label><input type="text" id="editNickname"></div>
                                                 <div class="form-group"><label for="editBadgeId">BadgeID:</label><input type="text" id="editBadgeId"></div>
                                                 <div class="form-group"><label for="editEmail">Email:</label><input type="text" id="editEmail"></div>
                                                 <div class="form-group"><label for="editSite">Site:</label>
@@ -309,6 +317,13 @@
                                                     <select id="editRole">
                                                         <option value="admin">Admin</option>
                                                         <option value="user">User</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group"><label for="editTrainerCoach">Role:</label>
+                                                    <select id="editTrainerCoach">
+                                                        <option value="trainer">Trainer</option>
+                                                        <option value="coach">Coach</option>
+                                                        <option value="none">None</option>
                                                     </select>
                                                 </div>
                                                 <!-- Buttons Section -->

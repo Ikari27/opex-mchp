@@ -48,7 +48,7 @@ async function fetchBlackbelts() {
                 }
             }
 
-            const fullName = `${user.firstname || ''} ${user.lastname || ''}`.trim();
+            const fullName = `${user.nickname || user.firstname || ''} ${user.lastname || ''}`.trim();
             const position = user.position || '';
             const department = user.department || '';
 

@@ -14,15 +14,15 @@ function showGallery(galleryId, button) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetchBlackbelts();
+    fetchCoaches();
 });
 
-async function fetchBlackbelts() {
+async function fetchCoaches() {
     const spinner = document.getElementById('loadingSpinner');
     const content = document.getElementById('Content');
 
     try {
-        const response = await fetch('/api/coachs');
+        const response = await fetch('/api/coaches');
         if (!response.ok) throw new Error("Failed to fetch Coach list");
 
         const users = await response.json();
@@ -48,7 +48,7 @@ async function fetchBlackbelts() {
                 }
             }
 
-            const fullName = `${user.firstname || ''} ${user.lastname || ''}`.trim();
+            const fullName = `${user.nickname || user.firstname || ''} ${user.lastname || ''}`.trim();
             const position = user.position || '';
             const department = user.department || '';
 
@@ -77,7 +77,7 @@ async function fetchBlackbelts() {
         });
 
     } catch (error) {
-        console.error("Error loading Black Belt details:", error);
+        console.error("Error loading Coach details:", error);
     } finally {
         // ALWAYS RUNS: Hides spinner and shows main gallery content seamlessly
         if (spinner) spinner.style.display = 'none';

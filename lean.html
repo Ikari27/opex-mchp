@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Lean Six Sigma | Operational Excellence Portal</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Operational Excellence Portal">
+        <meta name="keywords" content="Lean Six Sigma, Dashboard, Green Belt">
+        <meta name="author" content="Mark Daniel Tabor">
+        <link rel="icon" href="/assets/images/logo2.png"/>
+        <link href="./css/global.css" rel="stylesheet"/>
+        <link href="./css/lean.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <nav>
+            <div class="navbar">
+                <div class="brand">
+                    <img class="logo" src="./assets/images/logo2.png" alt="logo">
+                    <span class="name"><a href="./index.html" rel="prefetch">OPERATIONAL EXCELLENCE</a></span>
+                </div>
+
+                <ul class="nav-menu">
+                    <li><a href="./index.html" rel="prefetch">Home</a></li>
+
+                    <li class="dp"><a>Experts</a>
+                        <ul class="dp-list">
+                            <li><a href="./coaches.html" rel="prefetch">Coaches</a></li>
+                            <li><a href="./trainers.html" rel="prefetch">Trainers</a></li>
+                            <li><a href="./greenbelts.html" rel="prefetch">Lean Six Sigma Green Belts</a></li>
+                            <li><a href="./blackbelts.html" rel="prefetch">Lean Six Sigma Black Belts</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>Knowledge Center</a>
+                        <ul class="dp-list">
+                            <li><a href="./future.html" rel="prefetch">Business Metrics of OpEx</a></li>
+                            <li><a href="./lean.html" rel="prefetch">Lean Six Sigma</a></li>
+                            <li><a href="./cit.html" rel="prefetch">Lean CIT</a></li>
+                            <li><a href="./about.html" rel="prefetch">About</a></li>                         
+                        </ul>
+                    </li>
+
+                    <li class="dp"><a>LSS Hub</a>
+                        <ul class="dp-list">
+                            <div id="hello" class="greeting">Hello! <span class="firstname"></span></div>
+                            <li id="login"><a href="./login.html" rel="prefetch">Login</a></li>
+                            <li id="admin"><a href="./admin.html" rel="prefetch">Admin</a></li>
+                            <li><a href="./training.html" rel="prefetch">Trainings</a></li>
+                            <li><a href="./coaching.html" rel="prefetch">Coaching</a></li>
+                            <li id="logout"><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+            <section id="editor-bar" style="padding: 10px 20px; background: #eee; text-align: right; display: none;  position: sticky; top: 70px; z-index: 100;">
+                <div id="editor-toolbar" style="display: none; margin-bottom: 5px;">
+                </div>
+                
+                <!-- New Add Button -->
+                <button id="add-btn" style="display: none; background: #007bff; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="addNewTextBlock()">+ Add New Text</button>
+                <button id="save-btn" style="display: none; background: #28a745; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="saveAllChanges()">Save All Changes</button>
+                <button id="cancel-btn" style="display: none; margin-left: 5px; background-color: #6c757d; color: white; padding: 6px 12px; border:none; cursor:pointer;" onclick="cancelChanges()">Cancel</button>
+                <span id="status-msg" style="margin-left: 10px; font-weight: bold;"></span>
+            </section>
+
+            <section class="scopes">
+                <section>
+                    <div class="header">
+                        <h1 data-id="52" class="editable">Lean Six Sigma Project Scopes</h1>
+                    </div>
+                </section>
+                <section class="main">
+                    <div class="desc">
+                        <div class="desc-header">
+                            <div>
+                                <h1> <!--placeholder-->
+                                    17
+                                </h1>
+                            </div>
+                            
+                            <div>
+                                <h3 data-id="53" class="editable">
+                                    Total
+                                </h3>
+                                <h3 data-id="54" class="editable">
+                                    Projects
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="desc-content"><!--placeholder-->
+                            <div class="desc-item">
+                                <p data-id="55" class="editable">6 projects (35%) focused on Yield & Quality improvement</p>
+                            </div>
+                            <div class="desc-item">
+                                <p data-id="56" class="editable">5 projects (29%) focused on Productivity & Capacity enhancement</p>
+                            </div>
+                            <div class="desc-item">
+                                <p data-id="57" class="editable">Strong emphasis on Operational Excellence initiatives and Quality Improvement</p>
+                            </div>
+                            <div class="desc-item">
+                                <p data-id="58" class="editable">Additional projects target Efficiency, Cost, and Cycle Time reduction</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bubble-graph">
+                        <div class="yldqlty bubble">
+                            <img src="./assets/ico/leaves.png" alt="leaves">
+                            <div class="bubble-context">
+                                <h3 data-id="59" class="editable">Yield + Quality</h3>
+                                <h1>6</h1> <!--placeholder-->
+                            </div>
+                        </div>
+                        <div class="productivity bubble">
+                            <img src="./assets/ico/bar-chart.png" alt="bar-chart">
+                            <div class="bubble-context">
+                                <h3 data-id="60" class="editable">Productivity/Capacity</h3>
+                                <h1>5</h1> <!--placeholder-->
+                            </div>
+                        </div>
+                        <div class="cycle bubble">
+                            <img src="./assets/ico/stopwatch.png" alt="stopwatch">
+                            <div class="bubble-context">
+                                <h3 data-id="61" class="editable">Cycle Time</h3>
+                                <h1>1</h1> <!--placeholder-->
+                            </div>
+                        </div>
+                        <div class="qltyeff bubble">
+                            <img src="./assets/ico/cogs.png" alt="cogs">
+                            <div class="bubble-context">
+                                <h3 data-id="62" class="editable">Quality/Efficiency</h3>
+                                <h1>2</h1> <!--placeholder-->
+                            </div>
+                        </div>
+                        <div class="cost bubble">
+                            <img src="./assets/ico/coin.png" alt="coin">
+                            <div class="bubble-context">
+                                <h3 data-id="63" class="editable">Cost Savings</h3>
+                                <h1>1</h1> <!--placeholder-->
+                            </div>
+                        </div>
+                        <div class="yld bubble">
+                            <img src="./assets/ico/farmer.png" alt="farmer">
+                            <div class="bubble-context">
+                                <h3 data-id="64" class="editable">Yield Improvement</h3>
+                                <h1>1</h1> <!--placeholder-->
+                            </div>
+                        </div>
+                        <div class="quality bubble">
+                            <img src="./assets/ico/badge.png" alt="badge">
+                            <div class="bubble-context">
+                                <h3 data-id="65" class="editable">Quality</h3>
+                                <h1>1</h1> <!--placeholder-->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+            <section>
+                <div class="opportunities">
+                    <div class="opp-title">
+                        <h1 data-id="66" class="editable">Lean Six Sigma Opportunities</h1>
+                    </div>
+                    <div class="opp-grid">
+                        <div class="opp-card">
+                            <h2 data-id="67" class="editable">Productivity & Efficiency</h2>
+                            <ul><!--placeholder-->
+                                <li data-id="68" class="editable">Yield Improvement</li>
+                                <li data-id="69" class="editable">Increased Productivity</li>
+                                <li data-id="70" class="editable">Capacity Optimization</li>
+                                <li data-id="71" class="editable">Cycle Time Reduction</li>
+                            </ul>
+                        </div>
+                        <div class="opp-card">
+                            <h2 data-id="72" class="editable">Financial Impact</h2>
+                            <ul><!--placeholder-->
+                                <li data-id="72" class="editable">Cost Reduction</li>
+                                <li data-id="73" class="editable">Cost Avoidance</li>
+                                <li data-id="74" class="editable">Scrap Reduction</li>
+                                <li data-id="75" class="editable">Waste Elimination</li>
+                            </ul>
+                        </div>
+                        <div class="opp-card">
+                            <h2 data-id="76" class="editable">Quality Excellence</h2>
+                            <ul><!--placeholder-->
+                                <li data-id="77" class="editable">Zero Defect</li>
+                                <li data-id="78" class="editable">Reduced Process Variation</li>
+                                <li data-id="79" class="editable">Standardization</li>
+                                <li data-id="80" class="editable">Customer Satisfaction</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="line"></div>
+            <section>
+                <div class="participation">
+                    <div class="part-title">
+                        <h1 data-id="81" class="editable">Lean Six Sigma Participation</h1>
+                    </div>
+                    <div class="part-content">
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+        <script src="./js/lean.js"></script>
+        <script src="./js/global.js"></script>
+    </body>
+    <footer>© 2026 Microchip Philippines</footer>
+</html>

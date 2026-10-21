@@ -109,7 +109,7 @@ app.get("/api/users", (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(401).json({ error: "Unauthorized" });
     }
-    const sql = "SELECT id, firstname, lastname, badgeid, email, site, certification, department, role FROM users ORDER BY id DESC";
+    const sql = "SELECT id, firstname, lastname, nickname, badgeid, email, site, certification, department, role, trainer_coach FROM users ORDER BY id DESC";
     db.query(sql, (err, results) => {
         if (err) {
             console.error(err);
@@ -251,7 +251,7 @@ app.get("/api/users/:id", (req, res) => {
     }
 
     const userId = req.params.id;
-    const sql = "SELECT id, firstname, lastname, badgeid, email, role, position, department, certification, profile_picture, site FROM users WHERE id = ?";
+    const sql = "SELECT id, firstname, lastname, nickname, badgeid, email, role, trainer_coach, position, department, certification, profile_picture, site FROM users WHERE id = ?";
     
     db.query(sql, [userId], (err, results) => {
         if (err) {
@@ -271,7 +271,7 @@ app.put("/api/users/:id", upload.single('imageFile'), (req, res) => {
     }
 
     const userId = req.params.id;
-    const { firstname, lastname, badgeid, email, position, department, certification, site, role } = req.body;
+    const { firstname, lastname, nickname, badgeid, email, position, department, certification, site, role, trainer_coach } = req.body;
 
     let profilePicturePath = null;
     if (req.file) {
@@ -290,9 +290,9 @@ app.put("/api/users/:id", upload.single('imageFile'), (req, res) => {
 
     let sql = `
         UPDATE users 
-        SET firstname = ?, lastname = ?, badgeid = ?, email = ?, position = ?, department = ?, certification = ?, site = ?, role = ?
+        SET firstname = ?, lastname = ?, nickname = ?, badgeid = ?, email = ?, position = ?, department = ?, certification = ?, site = ?, role = ?, trainer_coach = ?
     `;
-    let params = [firstname, lastname, badgeid, email, position, department, certification, site, role];
+    let params = [firstname, lastname, nickname, badgeid, email, position, department, certification, site, role, trainer_coach];
 
     if (profilePicturePath) {
         sql += `, profile_picture = ?`;
@@ -460,7 +460,7 @@ app.put("/api/projects/:id", (req, res) => {
 
 app.get("/api/greenbelts", (req, res) => {
     const sql = `
-        SELECT id, firstname, lastname, position, department, certification, profile_picture, site 
+        SELECT id, firstname, lastname, nickname, position, department, certification, profile_picture, site 
         FROM users 
         WHERE certification LIKE '%Green Belt%'
     `;
@@ -475,7 +475,7 @@ app.get("/api/greenbelts", (req, res) => {
 
 app.get("/api/blackbelts", (req, res) => {
     const sql = `
-        SELECT id, firstname, lastname, position, department, certification, profile_picture, site 
+        SELECT id, firstname, lastname, nickname, position, department, certification, profile_picture, site 
         FROM users 
         WHERE certification LIKE '%Black Belt%'
     `;
@@ -494,7 +494,7 @@ app.get("/api/blackbelts", (req, res) => {
 app.get("/api/public-profile/:id", (req, res) => {
     const userId = req.params.id;
 
-    const userSql = "SELECT id, firstname, lastname, badgeid, email, position, department, certification, profile_picture, site, role FROM users WHERE id = ?";
+    const userSql = "SELECT id, firstname, lastname, nickname, badgeid, email, position, department, certification, profile_picture, site, role FROM users WHERE id = ?";
     
     db.query(userSql, [userId], (err, userResults) => {
         if (err) {
@@ -532,5 +532,39 @@ app.get("/api/public-profile/:id", (req, res) => {
                 }
             });
         });
+    });
+});
+
+// =============================
+// TRAINERS & COACH API
+// =============================
+
+app.get("/api/trainers", (req, res) => {
+    const sql = `
+        SELECT id, firstname, lastname, nickname, position, department, certification, profile_picture, site 
+        FROM users 
+        WHERE trainer_coach LIKE '%Trainer%'
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
+    });
+});
+
+app.get("/api/coaches", (req, res) => {
+    const sql = `
+        SELECT id, firstname, lastname, nickname, position, department, certification, profile_picture, site 
+        FROM users 
+        WHERE trainer_coach LIKE '%Coach%'
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
     });
 });

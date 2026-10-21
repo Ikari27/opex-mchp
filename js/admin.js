@@ -87,6 +87,7 @@ async function openUserProfile(userId) {
         document.getElementById('headerFirstname').innerText = user.firstname || '';
         document.getElementById('viewFirstname').innerText = user.firstname || '';
         document.getElementById('viewLastname').innerText = user.lastname || '';
+        document.getElementById('viewNickname').innerText = user.nickname || '';
         document.getElementById('viewBadgeId').innerText = user.badgeid || '';
         document.getElementById('viewEmail').innerText = user.email || '';
         document.getElementById('viewPosition').innerText = user.position || '-';
@@ -94,6 +95,7 @@ async function openUserProfile(userId) {
         document.getElementById('viewCertification').innerText = user.certification || 'None';
         document.getElementById('viewSite').innerText = user.site || '-';
         document.getElementById('viewRole').innerText = user.role || 'User';
+        document.getElementById('viewTrainerCoach').innerText = user.trainer_coach || 'None';
 
         // Explicitly set or clear profile picture per user record
         const defaultImage = "./assets/images/default.jpg";
@@ -123,6 +125,7 @@ function switchToEditMode() {
     // Populate the edit form inputs with the currently viewed text fields
     document.getElementById('editFirstname').value = document.getElementById('viewFirstname').innerText;
     document.getElementById('editLastname').value = document.getElementById('viewLastname').innerText;
+    document.getElementById('editNickname').value = document.getElementById('viewNickname').innerText;
     document.getElementById('editBadgeId').value = document.getElementById('viewBadgeId').innerText;
     document.getElementById('editEmail').value = document.getElementById('viewEmail').innerText;
     document.getElementById('editPosition').value = document.getElementById('viewPosition').innerText === '-' ? '' : document.getElementById('viewPosition').innerText;
@@ -130,6 +133,7 @@ function switchToEditMode() {
     document.getElementById('editCertification').value = document.getElementById('viewCertification').innerText;
     document.getElementById('editSite').value = document.getElementById('viewSite').innerText;
     document.getElementById('editRole').value = document.getElementById('viewRole').innerText.toLowerCase();
+    document.getElementById('editTrainerCoach').value = document.getElementById('viewTrainerCoach').innerText;
 }
 
 function switchToViewMode() {
@@ -176,7 +180,6 @@ async function loadProjectTable() {
                 <td>${project.project_title || ''}</td>
                 <td>${project.project_impact || ''}</td>
                 <td>${formattedSavings}</td>
-                <td>${project.financial_impact || ''}</td>
             `;
 
             // When a project row is clicked, open its project profile view
@@ -397,6 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('firstname', document.getElementById('editFirstname').value);
             formData.append('lastname', document.getElementById('editLastname').value);
+            formData.append('nickname', document.getElementById('editNickname').value);
             formData.append('badgeid', document.getElementById('editBadgeId').value);
             formData.append('email', document.getElementById('editEmail').value);
             formData.append('position', document.getElementById('editPosition').value);
@@ -404,6 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('certification', document.getElementById('editCertification').value);
             formData.append('site', document.getElementById('editSite').value);
             formData.append('role', document.getElementById('editRole').value);
+            formData.append('trainer_coach', document.getElementById('editTrainerCoach').value);
 
             if (fileInput && fileInput.files.length > 0) {
                 formData.append('imageFile', fileInput.files[0]);
