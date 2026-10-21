@@ -144,6 +144,38 @@
     font-weight: bold;
 }
 
+.mvp {
+    margin: 20px;
+    display: flex;
+    height: 500px;
+
+    gap: 20px;
+}
+
+.mission {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+
+    border: 2px solid red;
+}
+
+.vision {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+
+    border: 2px solid red;
+}
+
+.purpose {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+
+    border: 2px solid red;
+}
+
 .quality {
     margin: 20px;
 }
