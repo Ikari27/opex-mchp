@@ -62,8 +62,12 @@
                             Dashboard
                         </div>
 
+                        <div class="menu-item" onclick="showSection('training', this)">
+                            Trainings
+                        </div>
+
                         <div class="menu-item" onclick="showSection('project', this)">
-                            Project
+                            Projects
                         </div>
 
                         <div class="menu-item" onclick="showSection('users', this)">
@@ -98,6 +102,96 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div id="training" class="content-section">
+                            <div class="header">
+                                <h1>Trainings</h1>
+                            </div>
+
+                            <div class="training-list" id="training-list">
+                                <div class="row-button">
+                                    <h3>Registered Trainings</h3>
+                                    <div class="buttons">
+                                        <Button id="addTrainingToggleBtn">Add New Training</Button>
+                                    </div>
+                                </div>
+                                <div class="table-container">
+                                    <table class="training-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Trainer</th>
+                                                <th>Training</th>
+                                                <th>Hours</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="trainingTableBody">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <section>
+                                <div class="training-formpage" id="training-form" style="display: none;">
+                                    <button class="backbutton" id="backFromAddTrainingBtn">&#10094; Back</button>
+                                    <h2>Add New Training</h2>
+                                    <form class="training-form">
+                                        <fieldset>
+                                            <label for="trainer">Trainer: <input type="text" name="trainer" required></label> 
+                                            <label for="training">Training: <input type="text" name="training" required></label>
+                                            <label for="hrs">Hours: <input type="text" name="hrs" required></label>
+                                        </fieldset>
+
+                                        <fieldset>
+                                            <button class="submit">Submit</button>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </section>
+                        </div>
+
+                        
+
+                        <!--Training VIEW-->
+                            <div class="training-view" id="training-profile" class="content-section">
+                                <div class="buttons">
+                                    <button id="backToTrainingsBtn">&#10094; Back to Trainings</button>
+                                    <button id="editTrainingToggleBtn">Edit Training Details</button>
+                                </div>
+                                <h1><span id="TrainingheaderFirstname"></span>'s Training</h1>
+
+                                <div class="training">
+                                    <div class="viewmode" id="trainingViewMode">
+                                        <img id="viewTrainerImg" class="training-img" alt="Profile Picture">
+                                        <div class="training-details">
+                                            <div>
+                                                <h3>Training: <span id="viewTraining"></span></h3>
+                                                <h3>Trainer: <span id="viewTrainer"></span></span></h3>
+                                                <h3>Hours: <span id="viewHrs"></span></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="editmode" id="trainingEditMode" style="display: none;">
+                                        <input type="file" id="training-file-input" style="display: none;" accept="image/*">
+                                        <div class="training-details">
+                                            <div>
+                                                <div class="form-group"><label for="editTraining">Training:</label><input type="text" id="editTraining"></div>
+                                                <div class="form-group"><label for="editTrainer">Trainer:</label><input type="text" id="editTrainer"></div>
+                                                <div class="form-group"><label for="edithrs">Hours:</label><input type="text" id="edithrs"></div>
+                                            </div>
+
+                                            <div>
+                                                <!-- Buttons Section -->
+                                                <div class="training-button">
+                                                    <button class="save" id="savetrainingBtn">Save</button>
+                                                    <button class="cancel" id="canceltrainingBtn">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         <div id="project" class="content-section">
                             <div class="header">
@@ -146,6 +240,8 @@
                                 </div>
                             </section>
                         </div>
+
+                        
 
                         <!--PROJECT VIEW-->
                             <div class="project-view" id="project-profile" class="content-section">
@@ -234,7 +330,7 @@
                                 <div class="user-formpage" id="user-form" style="display: none;">
                                     <button class="backbutton" id="backFromAddUserBtn">&#10094; Back</button>
                                     <h2>Add New User</h2>
-                                    <form class="user-form" action="/register" method="POST">
+                                    <form class="user-form" action="/register" method="POST" id="user-form2">
                                         <fieldset>
                                             <label for="firstname">First Name <input type="text" name="firstname" required></label>
                                             <label for="lastname">Last Name <input type="text" name="lastname" required></label>
@@ -246,6 +342,8 @@
                                         <fieldset>
                                             <button class="submit">Submit</button>
                                         </fieldset>
+
+                                        <div id="registerMessage" style="margin-top: 8px; font-size: 14px;"></div>
                                     </form>
                                 </div>
                             </section>
@@ -275,9 +373,11 @@
 
                                             <div>
                                                 <h3>Certification: <span id="viewCertification"></span></h3>
+                                                <h3>Candidate/Certified: <span id="viewCertState"></span></h3>
                                                 <h3>Position: <span id="viewPosition"></span></h3>
                                                 <h3>Department: <span id="viewDepartment"></span></h3>
                                                 <h3>Trainer/Coach: <span id="viewTrainerCoach"></span></h3>
+                                                <h3>LSS/PDCA: <span id="viewLssPdca"></span></h3>
                                                 <h3>Role: <span id="viewRole"></span></h3>
                                             </div>
                                         </div>
@@ -311,6 +411,13 @@
                                                         <option value="None">None</option>
                                                     </select>
                                                 </div>
+                                                <div class="form-group"><label for="editCertState">Certification:</label>
+                                                    <select id="editCertState">
+                                                        <option value="Candidate">Candidate</option>
+                                                        <option value="Certified">Certified</option>
+                                                        <option value="None">None</option>
+                                                    </select>
+                                                </div>
                                                 <div class="form-group"><label for="editPosition">Position:</label><input type="text" id="editPosition"></div>
                                                 <div class="form-group"><label for="editDepartment">Department:</label><input type="text" id="editDepartment"></div>
                                                 <div class="form-group"><label for="editRole">Role:</label>
@@ -319,10 +426,18 @@
                                                         <option value="user">User</option>
                                                     </select>
                                                 </div>
-                                                <div class="form-group"><label for="editTrainerCoach">Role:</label>
+                                                <div class="form-group"><label for="editTrainerCoach">Trainer/Coach:</label>
                                                     <select id="editTrainerCoach">
                                                         <option value="trainer">Trainer</option>
                                                         <option value="coach">Coach</option>
+                                                        <option value="both">Both</option>
+                                                        <option value="none">None</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group"><label for="editLssPdca">LSS/PDCA:</label>
+                                                    <select id="editLssPdca">
+                                                        <option value="lss">LSS</option>
+                                                        <option value="pdca">PDCA</option>
                                                         <option value="none">None</option>
                                                     </select>
                                                 </div>

@@ -22,7 +22,7 @@ async function loadUserProfile(userId) {
         const totals = data.totals || { savings: 0, quality: 0 };
 
         // 1. Populate Text Details
-        document.getElementById('headerFirstname').textContent = user.nickname || 'User';
+        document.getElementById('headerFirstname').textContent = user.nickname || user.firstname || 'User';
         document.getElementById('viewFirstname').textContent = user.nickname || user.firstname || '';
         document.getElementById('viewLastname').textContent = user.lastname || '';
         document.getElementById('viewSite').textContent = user.site || '';

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slides.length === 0) return;
 
     let currentIndex = 0;
-    const intervalTime = 3000; // 3 seconds per slide
+    const intervalTime = 2000; // 2 seconds per slide
 
     const slideInterval = setInterval(() => {
         slides[currentIndex].classList.remove('active');

@@ -101,6 +101,7 @@
 }
 
 .gb-card img {
+    background-color: white;
     object-fit: cover;
     object-position: top;
     display: block;

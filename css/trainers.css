@@ -17,6 +17,13 @@
     gap: 20px;
 }
 
+.team-selector {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    gap: 20px;
+}
+
 .site-selector button {
     width:  600px;
     padding: 20px;
@@ -35,6 +42,34 @@
 }
 
 .site-selector button.active {
+    background: var(--primary-red-color);
+    color: var(--white-color);
+    font-weight: bold;
+    transform: scale(0.9);
+}
+
+.team-selector button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:  200px;
+    height: 20px;
+    padding: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    background-color: var(--white-color);
+    transition: all 0.3s ease;
+}
+
+.team-selector button:hover {
+    background-color: var(--secondary-red-color);
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+.team-selector button.active {
     background: var(--primary-red-color);
     color: var(--white-color);
     font-weight: bold;

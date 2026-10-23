@@ -9,6 +9,10 @@ const fs = require('fs');
 
 const app = express();
 
+// ==========================================
+// MIDDLEWARE CONFIGURATION
+// ==========================================
+
 app.use(session({
     secret: "opex-secret-key",
     resave: false,
@@ -18,7 +22,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// PROTECT ADMIN PAGE
+// Protect Admin Page HTML route
 app.get("/admin.html", (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.send("Access denied. Admins only."); 
@@ -26,8 +30,12 @@ app.get("/admin.html", (req, res) => {
     res.sendFile(path.join(__dirname, "../admin.html"));
 });
 
-// Serve static files
+// Serve static files from parent directory
 app.use(express.static(path.join(__dirname, "..")));
+
+// ==========================================
+// DATABASE CONNECTION
+// ==========================================
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -42,30 +50,81 @@ db.connect(err => {
     console.log("MySQL Connected!");
 });
 
+// ==========================================
+// FILE UPLOAD CONFIGURATION (MULTER)
+// ==========================================
+
+// Ensure the uploads directory exists on startup
+const uploadDir = path.join(__dirname, "../assets/uploads");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, "../assets/uploads"));
+    },
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        
+        // Grab the ID either from route params (:id) or request body
+        const userId = req.params.id || req.body.id;
+        
+        // If updating a user profile, name it user_<id>.<ext>
+        // Otherwise, fallback to a timestamp for general uploads
+        const filename = userId ? `user_${userId}${ext}` : `${Date.now()}-${file.originalname}`;
+        
+        cb(null, filename);
+    }
+});
+const upload = multer({ storage: storage });
+
 
 // ==========================================
-// USER & AUTH ROUTES
+// 1. AUTHENTICATION & USER MANAGEMENT ROUTES
 // ==========================================
 
 app.post("/register", async (req, res) => {
-    const previousPage = req.get('referer') || "/index.html";
     const { firstname, lastname, badgeid, email, password } = req.body;
 
-    try {
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const sql = "INSERT INTO users (firstname, lastname, badgeid, email, password, role) VALUES (?, ?, ?, ?, ?, 'user')";
+    if (!firstname || !lastname || !badgeid || !email || !password) {
+        return res.status(400).json({ success: false, error: "All fields are required." });
+    }
 
-        db.query(sql, [firstname, lastname, badgeid, email, hashedPassword], (err, result) => {
+    try {
+        const checkSql = "SELECT id FROM users WHERE email = ? OR badgeid = ?";
+        
+        db.query(checkSql, [email, badgeid], async (err, results) => {
             if (err) {
-                console.error(err);
-                return res.send("Registration failed");
+                console.error("Database check error:", err);
+                return res.status(500).json({ success: false, error: "Database error during registration check." });
             }
-            res.redirect(previousPage);
+
+            if (results.length > 0) {
+                return res.status(400).json({ success: false, error: "An account with this Email or Badge ID already exists." });
+            }
+
+            try {
+                const saltRounds = 10;
+                const hashedPassword = await bcrypt.hash(password, saltRounds);
+                const insertSql = "INSERT INTO users (firstname, lastname, badgeid, email, password, role) VALUES (?, ?, ?, ?, ?, 'user')";
+
+                db.query(insertSql, [firstname, lastname, badgeid, email, hashedPassword], (insertErr) => {
+                    if (insertErr) {
+                        console.error("Insert error:", insertErr);
+                        return res.status(500).json({ success: false, error: "Registration failed due to a database error." });
+                    }
+                    
+                    return res.json({ success: true, message: "Registration successful! You can now log in." });
+                });
+            } catch (hashError) {
+                console.error("Hashing error:", hashError);
+                return res.status(500).json({ success: false, error: "Server error during password hashing." });
+            }
         });
     } catch (error) {
-        console.error(error);
-        res.send("Server error during registration");
+        console.error("Server error:", error);
+        return res.status(500).json({ success: false, error: "Server error during registration." });
     }
 });
 
@@ -98,6 +157,13 @@ app.post("/login", (req, res) => {
     });
 });
 
+app.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (err) console.error("Error destroying session:", err);
+        res.redirect("/index.html");
+    });
+});
+
 app.get("/api/user", (req, res) => {
     if (!req.session.user) {
         return res.json({ loggedIn: false });
@@ -109,7 +175,7 @@ app.get("/api/users", (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(401).json({ error: "Unauthorized" });
     }
-    const sql = "SELECT id, firstname, lastname, nickname, badgeid, email, site, certification, department, role, trainer_coach FROM users ORDER BY id DESC";
+    const sql = "SELECT id, firstname, lastname, nickname, badgeid, email, site, certification, cert_candidate, department, role, trainer_coach FROM users ORDER BY id DESC";
     db.query(sql, (err, results) => {
         if (err) {
             console.error(err);
@@ -119,19 +185,79 @@ app.get("/api/users", (req, res) => {
     });
 });
 
-app.get("/logout", (req, res) => {
-    req.session.destroy((err) => {
-        if (err) console.error("Error destroying session:", err);
-        res.redirect("/index.html");
+app.get("/api/users/:id", (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const userId = req.params.id;
+    const sql = "SELECT id, firstname, lastname, nickname, badgeid, email, role, trainer_coach, lss_pdca, cert_candidate, position, department, certification, profile_picture, site FROM users WHERE id = ?";
+    
+    db.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.json(results[0]);
     });
 });
 
-app.listen(5500, () => {
-    console.log("Server running on port 5500");
+app.put("/api/users/:id", upload.single('imageFile'), (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ success: false, error: "Unauthorized" });
+    }
+
+    const userId = req.params.id;
+    const { firstname, lastname, nickname, badgeid, email, position, department, certification, site, role, trainer_coach, lss_pdca, cert_candidate } = req.body;
+
+    let profilePicturePath = null;
+    if (req.file) {
+        profilePicturePath = `./assets/uploads/${req.file.filename}`;
+        console.log("New file generated at:", profilePicturePath);
+
+        const selectOldSql = "SELECT profile_picture FROM users WHERE id = ?";
+        db.query(selectOldSql, [userId], (err, results) => {
+            if (!err && results.length > 0 && results[0].profile_picture) {
+                const oldDbPath = results[0].profile_picture;
+                if (oldDbPath !== profilePicturePath) {
+                    const oldFullPath = path.join(__dirname, "../", oldDbPath);
+                    if (fs.existsSync(oldFullPath)) {
+                        fs.unlink(oldFullPath, () => {});
+                    }
+                }
+            }
+        });
+    }
+
+    let sql = `
+        UPDATE users 
+        SET firstname = ?, lastname = ?, nickname = ?, badgeid = ?, email = ?, position = ?, department = ?, certification = ?, site = ?, role = ?, trainer_coach = ?, lss_pdca = ?, cert_candidate = ?
+    `;
+    let params = [firstname, lastname, nickname, badgeid, email, position, department, certification, site, role, trainer_coach, lss_pdca, cert_candidate];
+
+    if (profilePicturePath) {
+        sql += `, profile_picture = ?`;
+        params.push(profilePicturePath);
+    }
+
+    sql += ` WHERE id = ?`;
+    params.push(userId);
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            console.error("Database update error:", err);
+            return res.status(500).json({ success: false, error: "Database update failed" });
+        }
+        res.json({ success: true, message: "Profile updated successfully!", profile_picture: profilePicturePath });
+    });
 });
 
+
 // ==========================================
-// FULL-PAGE WEB CONTENT API ROUTES
+// 2. WEB CONTENT & IMAGE EDITOR ROUTES
 // ==========================================
 
 app.get("/api/all-content", (req, res) => {
@@ -187,20 +313,6 @@ app.post("/api/content/create-specific", (req, res) => {
     });
 });
 
-// ====================
-// IMAGE/VIDEO EDITOR
-// ====================
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, "../assets/uploads"));
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-const upload = multer({ storage: storage });
-
 app.post("/api/content/upload-image", upload.single('imageFile'), (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(401).json({ success: false, error: "Unauthorized" });
@@ -241,78 +353,9 @@ app.post("/api/content/upload-image", upload.single('imageFile'), (req, res) => 
     });
 });
 
-// =============
-// PROFILE USER
-// =============
-
-app.get("/api/users/:id", (req, res) => {
-    if (!req.session.user || req.session.user.role !== 'admin') {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    const userId = req.params.id;
-    const sql = "SELECT id, firstname, lastname, nickname, badgeid, email, role, trainer_coach, position, department, certification, profile_picture, site FROM users WHERE id = ?";
-    
-    db.query(sql, [userId], (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Database error" });
-        }
-        if (results.length === 0) {
-            return res.status(404).json({ error: "User not found" });
-        }
-        res.json(results[0]);
-    });
-});
-
-app.put("/api/users/:id", upload.single('imageFile'), (req, res) => {
-    if (!req.session.user || req.session.user.role !== 'admin') {
-        return res.status(401).json({ success: false, error: "Unauthorized" });
-    }
-
-    const userId = req.params.id;
-    const { firstname, lastname, nickname, badgeid, email, position, department, certification, site, role, trainer_coach } = req.body;
-
-    let profilePicturePath = null;
-    if (req.file) {
-        profilePicturePath = `./assets/uploads/${req.file.filename}`;
-
-        const selectOldSql = "SELECT profile_picture FROM users WHERE id = ?";
-        db.query(selectOldSql, [userId], (err, results) => {
-            if (!err && results.length > 0 && results[0].profile_picture) {
-                const oldPath = path.join(__dirname, "../", results[0].profile_picture);
-                if (fs.existsSync(oldPath)) {
-                    fs.unlink(oldPath, () => {});
-                }
-            }
-        });
-    }
-
-    let sql = `
-        UPDATE users 
-        SET firstname = ?, lastname = ?, nickname = ?, badgeid = ?, email = ?, position = ?, department = ?, certification = ?, site = ?, role = ?, trainer_coach = ?
-    `;
-    let params = [firstname, lastname, nickname, badgeid, email, position, department, certification, site, role, trainer_coach];
-
-    if (profilePicturePath) {
-        sql += `, profile_picture = ?`;
-        params.push(profilePicturePath);
-    }
-
-    sql += ` WHERE id = ?`;
-    params.push(userId);
-
-    db.query(sql, params, (err, result) => {
-        if (err) {
-            console.error("Database update error:", err);
-            return res.status(500).json({ success: false, error: "Database update failed" });
-        }
-        res.json({ success: true, message: "Profile updated successfully!", profile_picture: profilePicturePath });
-    });
-});
 
 // ==========================================
-// PROJECT ROUTES
+// 3. PROJECT ROUTES
 // ==========================================
 
 app.get("/api/projects", (req, res) => {
@@ -331,7 +374,6 @@ app.get("/api/projects", (req, res) => {
     });
 });
 
-// POST / Create a new project (Admins only) - Cleaned up duplicate
 app.post("/api/projects", (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
         return res.status(401).json({ success: false, error: "Unauthorized" });
@@ -421,14 +463,9 @@ app.put("/api/projects/:id", (req, res) => {
     }
 
     const projectId = req.params.id;
-    
-    // Fallback to an empty object if req.body is undefined
     const body = req.body || {};
-    const project_owner = body.project_owner;
-    const project_title = body.project_title;
-    const project_impact = body.project_impact;
-    const project_savings = body.project_savings;
-    const quality_improved = body.quality_improved;
+    
+    const { project_owner, project_title, project_impact, project_savings, quality_improved } = body;
 
     const sql = `
         UPDATE projects 
@@ -454,13 +491,137 @@ app.put("/api/projects/:id", (req, res) => {
     });
 });
 
-// =============================
-// GREENBELTS & BLACKBELTS API
-// =============================
+
+// ==========================================
+// 4. TRAINING ROUTES
+// ==========================================
+
+app.get("/api/trainings", (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+    
+    const sql = "SELECT id, trainer, training, hrs FROM trainings ORDER BY id DESC";
+    
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
+    });
+});
+
+app.post("/api/trainings", (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ success: false, error: "Unauthorized" });
+    }
+
+    const { trainer, training, hrs } = req.body;
+
+    const sql = `
+        INSERT INTO trainings 
+        (trainer, training, hrs) 
+        VALUES (?, ?, ?)
+    `;
+
+    const values = [
+        trainer || null, 
+        training || null, 
+        hrs || null
+    ];
+
+    db.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Database insert error:", err);
+            return res.status(500).json({ success: false, error: "Database error while saving training" });
+        }
+        res.status(201).json({ success: true, message: "Training created successfully", trainingId: result.insertId });
+    });
+});
+
+app.get("/api/trainings/:id", (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const trainingId = req.params.id;
+
+    const trainingSql = "SELECT * FROM trainings WHERE id = ?";
+    db.query(trainingSql, [trainingId], (err, trainingResults) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        if (trainingResults.length === 0) {
+            return res.status(404).json({ error: "Training not found" });
+        }
+
+        const training = trainingResults[0];
+        const trainerName = training.trainer || "";
+
+        const userSql = "SELECT profile_picture, firstname, certification, cert_candidate, department FROM users WHERE CONCAT(firstname, ' ', lastname) LIKE ? OR firstname LIKE ? LIMIT 1";
+        
+        db.query(userSql, [`%${trainerName}%`, `%${trainerName}%`], (userErr, userResults) => {
+            let userInfo = { profile_picture: '', firstname: '', certification: 'None', department: 'N/A' };
+            
+            if (!userErr && userResults.length > 0) {
+                userInfo.profile_picture = userResults[0].profile_picture || '';
+                userInfo.firstname = userResults[0].firstname || '';
+                userInfo.certification = userResults[0].certification || 'None';
+                userInfo.department = userResults[0].department || 'N/A';
+            }
+
+            res.json({
+                ...training,
+                profile_picture: userInfo.profile_picture,
+                trainer_firstname: userInfo.firstname,
+                certification: userInfo.certification,
+                department: userInfo.department
+            });
+        });
+    });
+});
+
+app.put("/api/trainings/:id", (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.status(401).json({ success: false, error: "Unauthorized" });
+    }
+
+    const trainingId = req.params.id;
+    const body = req.body || {};
+    const { trainer, training, hrs } = body;
+
+    const sql = `
+        UPDATE trainings 
+        SET trainer = ?, training = ?, hrs = ?
+        WHERE id = ?
+    `;
+    
+    const params = [
+        trainer || null, 
+        training || null, 
+        hrs || null,
+        trainingId
+    ];
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            console.error("Database trainings update error:", err);
+            return res.status(500).json({ success: false, error: "Database update failed" });
+        }
+        res.json({ success: true, message: "Training updated successfully!" });
+    });
+});
+
+
+// ==========================================
+// 5. EXPERTS, BELTS & PUBLIC PROFILE ROUTES
+// ==========================================
 
 app.get("/api/greenbelts", (req, res) => {
     const sql = `
-        SELECT id, firstname, lastname, nickname, position, department, certification, profile_picture, site 
+        SELECT id, firstname, lastname, nickname, position, department, certification, cert_candidate, profile_picture, site 
         FROM users 
         WHERE certification LIKE '%Green Belt%'
     `;
@@ -475,7 +636,7 @@ app.get("/api/greenbelts", (req, res) => {
 
 app.get("/api/blackbelts", (req, res) => {
     const sql = `
-        SELECT id, firstname, lastname, nickname, position, department, certification, profile_picture, site 
+        SELECT id, firstname, lastname, nickname, position, department, certification, cert_candidate, profile_picture, site 
         FROM users 
         WHERE certification LIKE '%Black Belt%'
     `;
@@ -488,13 +649,40 @@ app.get("/api/blackbelts", (req, res) => {
     });
 });
 
-// ==========================================
-// PUBLIC USER PROFILE & PROJECTS API
-// ==========================================
+app.get("/api/trainers", (req, res) => {
+    const sql = `
+        SELECT id, firstname, lastname, nickname, position, department, certification, cert_candidate, profile_picture, site, lss_pdca 
+        FROM users 
+        WHERE trainer_coach LIKE '%Trainer%' OR trainer_coach LIKE '%Both%'
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
+    });
+});
+
+app.get("/api/coaches", (req, res) => {
+    const sql = `
+        SELECT id, firstname, lastname, nickname, position, department, certification, cert_candidate, profile_picture, site, lss_pdca 
+        FROM users 
+        WHERE trainer_coach LIKE '%Coach%' OR trainer_coach LIKE '%Both%'
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
+    });
+});
+
 app.get("/api/public-profile/:id", (req, res) => {
     const userId = req.params.id;
 
-    const userSql = "SELECT id, firstname, lastname, nickname, badgeid, email, position, department, certification, profile_picture, site, role FROM users WHERE id = ?";
+    const userSql = "SELECT id, firstname, lastname, nickname, badgeid, email, position, department, certification, cert_candidate, profile_picture, site, role FROM users WHERE id = ?";
     
     db.query(userSql, [userId], (err, userResults) => {
         if (err) {
@@ -508,6 +696,7 @@ app.get("/api/public-profile/:id", (req, res) => {
         const user = userResults[0];
         const fullName = `${user.firstname || ''} ${user.lastname || ''}`.trim();
 
+        // 1. Query Projects
         const projectsSql = "SELECT * FROM projects WHERE project_owner LIKE ? ORDER BY id ASC";
         
         db.query(projectsSql, [`%${fullName}%`], (projErr, projResults) => {
@@ -516,55 +705,47 @@ app.get("/api/public-profile/:id", (req, res) => {
                 return res.status(500).json({ error: "Database error" });
             }
 
-            let totalSavings = 0;
-            let totalQuality = 0;
-            projResults.forEach(project => {
-                totalSavings += parseFloat(project.project_savings || 0);
-                totalQuality += parseInt(project.quality_improved || 0);
-            });
-
-            res.json({
-                user: user,
-                projects: projResults,
-                totals: {
-                    savings: totalSavings,
-                    quality: totalQuality
+            // 2. Query Trainings
+            const trainingsSql = "SELECT * FROM trainings WHERE trainer LIKE ? ORDER BY id ASC";
+            
+            db.query(trainingsSql, [`%${fullName}%`], (trainErr, trainResults) => {
+                if (trainErr) {
+                    console.error("Database error:", trainErr);
+                    return res.status(500).json({ error: "Database error" });
                 }
+
+                let totalSavings = 0;
+                let totalQuality = 0;
+                projResults.forEach(project => {
+                    totalSavings += parseFloat(project.project_savings || 0);
+                    totalQuality += parseInt(project.quality_improved || 0);
+                });
+
+                let totalHrs = 0;
+                trainResults.forEach(training => {
+                    totalHrs += parseFloat(training.hrs || 0);
+                });
+
+                res.json({
+                    user: user,
+                    projects: projResults,
+                    trainings: trainResults,
+                    totals: {
+                        savings: totalSavings,
+                        quality: totalQuality,
+                        hrs: totalHrs
+                    }
+                });
             });
         });
     });
 });
 
-// =============================
-// TRAINERS & COACH API
-// =============================
 
-app.get("/api/trainers", (req, res) => {
-    const sql = `
-        SELECT id, firstname, lastname, nickname, position, department, certification, profile_picture, site 
-        FROM users 
-        WHERE trainer_coach LIKE '%Trainer%'
-    `;
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error("Database error:", err);
-            return res.status(500).json({ error: "Database error" });
-        }
-        res.json(results);
-    });
-});
+// ==========================================
+// SERVER INITIALIZATION
+// ==========================================
 
-app.get("/api/coaches", (req, res) => {
-    const sql = `
-        SELECT id, firstname, lastname, nickname, position, department, certification, profile_picture, site 
-        FROM users 
-        WHERE trainer_coach LIKE '%Coach%'
-    `;
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error("Database error:", err);
-            return res.status(500).json({ error: "Database error" });
-        }
-        res.json(results);
-    });
+app.listen(5500, () => {
+    console.log("Server running on port 5500");
 });

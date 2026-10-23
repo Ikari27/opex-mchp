@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
--- Host: localhost    Database: opex_db
+-- Host: 127.0.0.1    Database: opex_db
 -- ------------------------------------------------------
 -- Server version	8.0.46
 
@@ -33,7 +33,7 @@ CREATE TABLE `projects` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `belt_certification` enum('Green Belt','Black Belt') DEFAULT 'Green Belt',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `projects` (
 
 LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
+INSERT INTO `projects` VALUES (1,'Maria Theresa Ferrer','Improve Scan Cycle time from 5.5 days to 3 days','Productivity/Capacity/Quality',98.00,NULL,1,'2026-10-19 01:00:55',NULL),(2,'Maria Theresa Ferrer','Burr Reduction  for MPHIL VQFN Wettable Flank: Lead/Pad PPM Reduction  through Automated Optical Inspection (AOI)  ','Yield Improvement / Quality',119.10,NULL,1,'2026-10-20 03:04:04',NULL),(3,'Jerome Bando','Burr Defect','Productivity/Capacity/Quality',119.10,NULL,1,'2026-10-20 07:03:03',NULL),(4,'Carlo Emmanuel Almazora','High Opens Reduction for QFN 3x3 striptest','Capacity/Utilization',198.30,NULL,0,'2026-10-20 07:04:18',NULL);
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-18 20:29:58
+-- Dump completed on 2026-10-23 14:49:53

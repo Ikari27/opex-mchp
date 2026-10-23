@@ -202,6 +202,311 @@
 }
 
 /* ================
+/ Training
+/==================*/
+
+.training-list {
+    display:flex;
+    flex-direction: column;
+}
+
+.training-list h3 {
+    font-size: clamp(1rem, 2vw, 24rem);
+    margin: 20px;
+}
+
+.table-container {
+    display: flex;
+    height: 500px;
+
+}
+
+.training-table {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    border: 8px solid var(--primary-red-color);
+    border-radius: 20px;
+    width: calc(100% - 40px); /* Accounts for horizontal margins */
+    
+    /* Give the table a fixed or calculated height to fill the screen space */
+    height: calc(100vh - 350px); /* Adjust the 220px depending on header/padding height */
+}
+
+
+.training-table thead {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0; /* Prevents header from shrinking */
+}
+
+.training-table thead tr {
+    display: flex;
+    width: 100%;
+}
+
+.training-table th {
+    flex: 1;
+    text-align: center;
+    font-size: clamp(0.72rem, 1.3vw, 1.2rem);
+    border-bottom: 3px solid var(--primary-red-color);
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.training-table tbody {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto; /* Enables vertical scrolling when content overflows */
+    width: 100%;
+
+    text-align: center;
+    font-weight: 600;
+    font-size: clamp(0.72rem, 1vw, 1.2rem);
+}
+
+.training-table tbody > tr {
+    display: flex;
+    width: 100%;
+    min-height: 50px;
+    flex-shrink: 0;
+}
+
+.training-table td {
+    flex: 1; /* Matches the th flex sizing to keep columns aligned */
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.training-table tbody > tr:hover {
+    background-color: var(--quaternary-red-color);
+}
+
+.training-formpage {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    gap: 28px;
+}
+
+.training-formpage h2 {
+    margin-left: 20px;
+    font-size: clamp(1rem, 2vw, 24rem);
+}
+
+.training-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 40px;
+}
+
+
+.training-form fieldset {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 550px;
+    border: none;
+
+    gap: 10px;
+}
+
+.training-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(1rem, 1vw, 24rem);
+
+    font-weight: 600;
+}
+
+.training-form input {
+    background: var(--white-color);
+    gap: 5px;
+
+    border: 2px solid;
+    height: 25px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: clamp(1rem, 1vw, 24rem);
+}
+
+.training-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.training-button > .save {
+    width: 100px;
+}
+
+.training-button > .cancel {
+    width: 100px;
+    background-color: var(--quaternary-red-color);
+    color: var(--primary-red-color);
+    border: 2px solid var(--primary-red-color);
+}
+
+.training-button > .cancel:hover {
+    width: 100px;
+    background-color: var(--quaternary-red-color);
+    color: var(--primary-red-color);
+    border: 2px solid var(--primary-red-color);
+}
+
+.training-button button {
+    padding: 10px;
+    background-color: var(--secondary-red-color);
+    border: none;
+    border-radius: 10px;
+    color: var(--white-color);
+    font-size: clamp(0.9rem, 1vw, 24rem);
+    font-weight: 400;
+
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.training-button button:hover {
+    background-color: var(--primary-red-color);
+    transform: scale(1.05);
+    font-weight: bold;
+}
+
+.training-button button:active {
+    transform: scale(0.9);
+}
+
+/* ================
+/ User's Training
+/==================*/
+
+.training-view {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.training-view h1 {
+    font-size: clamp(1.5rem, 3vw, 24rem);
+    margin-top: 20px;
+}
+
+.training-view span {
+    color: var(--primary-red-color);
+}
+
+.viewmode, .editmode {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    margin: 20px;
+}
+
+.viewmode img,.editmode img {
+    display: flex;
+    object-fit: contain;
+    flex-shrink: 1;
+    width: 100%;
+    max-width: 250px;
+    height: 100%;
+    max-height: 250px;
+    box-shadow: 0 4px 12px var(--secondary-red-color);
+    border: 2px solid var(--primary-red-color);
+    background-color: white;
+    border-radius: 10px;
+}
+
+.training-details {
+    font-size: clamp(1rem, 1vw, 24rem);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+    gap: 60px;
+    flex: 1;
+}
+
+.training-details div:not(.training-button) {
+    display: flex;
+    flex-direction: column;
+    
+    flex-wrap: wrap;
+    
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group input {
+    background: var(--white-color);
+    gap: 5px;
+    width: 100%;
+    max-width: 1000px;
+
+    border: 2px solid;
+    height: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: clamp(1rem, 1vw, 24rem);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:hover {
+    border-color: var(--primary-red-color);
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.form-group select {
+    font-size: clamp(1rem, 1vw, 24rem);
+    border: 2px solid;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: var(--white-color);
+
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group select:hover {
+    border-color: var(--primary-red-color);
+}
+
+.form-group select:focus {
+    border-color: var(--primary-red-color);
+    box-shadow: 0 0 5px rgba(255, 77, 77, 0.3);
+}
+
+@media only screen and (max-width: 1000px) {
+    .viewmode img,.editmode img {
+        margin: 0 auto;
+    }
+
+    .viewmode, .editmode {
+        
+        margin: 0px;
+    }
+}
+
+/* ================
 / Projects
 /==================*/
 
@@ -230,7 +535,7 @@
     width: calc(100% - 40px); /* Accounts for horizontal margins */
     
     /* Give the table a fixed or calculated height to fill the screen space */
-    height: calc(100vh - 220px); /* Adjust the 220px depending on header/padding height */
+    height: calc(100vh - 350px); /* Adjust the 220px depending on header/padding height */
 }
 
 
@@ -534,7 +839,7 @@
     width: calc(100% - 40px); /* Accounts for horizontal margins */
     
     /* Give the table a fixed or calculated height to fill the screen space */
-    height: calc(100vh - 220px); /* Adjust the 220px depending on  header/padding height */
+    height: calc(100vh - 350px); /* Adjust the 220px depending on  header/padding height */
 }
 
 /* Make header a flex row so its children/cells stretch nicely */
@@ -687,7 +992,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     
-    gap: 60px;
+    gap: 120px;
     flex: 1;
 }
 
@@ -697,7 +1002,7 @@
     flex-wrap: wrap;
     
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
 }
 
 .form-group {

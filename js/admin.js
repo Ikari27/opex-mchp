@@ -3,8 +3,8 @@
 // ==========================================
 
 function showSection(sectionId, menuItem) {
-    // Hide all regular content sections, user-profile, AND project-profile
-    document.querySelectorAll('.content-section, #user-profile, #project-profile').forEach(section => {
+    // Hide all regular content sections, user-profile, project-profile, and training-profile
+    document.querySelectorAll('.content-section, #user-profile, #project-profile, #training-profile').forEach(section => {
         section.style.display = 'none';
     });
 
@@ -32,7 +32,6 @@ function showSection(sectionId, menuItem) {
 
 let selectedUserId = null;
 
-// Fetch and render all registered users from MySQL into the table
 async function loadUserTable() {
     try {
         const response = await fetch('/api/users');
@@ -56,7 +55,6 @@ async function loadUserTable() {
                 <td>${user.role || ''}</td>
             `;
 
-            // When a user row is clicked, fetch their detailed record using their database ID
             tr.addEventListener("click", () => {
                 openUserProfile(user.id);
             });
@@ -68,7 +66,6 @@ async function loadUserTable() {
     }
 }
 
-// Fetch specific user data from MySQL and display in Profile View Mode
 async function openUserProfile(userId) {
     try {
         const response = await fetch(`/api/users/${userId}`);
@@ -77,13 +74,11 @@ async function openUserProfile(userId) {
         const user = await response.json();
         selectedUserId = user.id;
 
-        // Hide other sections, show user-profile section
         document.querySelectorAll('.content-section, .profile-view').forEach(sec => sec.style.display = 'none');
         document.getElementById('user-profile').style.display = 'block';
 
         switchToViewMode();
 
-        // Populate View Mode text elements
         document.getElementById('headerFirstname').innerText = user.firstname || '';
         document.getElementById('viewFirstname').innerText = user.firstname || '';
         document.getElementById('viewLastname').innerText = user.lastname || '';
@@ -93,13 +88,18 @@ async function openUserProfile(userId) {
         document.getElementById('viewPosition').innerText = user.position || '-';
         document.getElementById('viewDepartment').innerText = user.department || '-';
         document.getElementById('viewCertification').innerText = user.certification || 'None';
+        document.getElementById('viewCertState').innerText = user.cert_candidate || 'None';
         document.getElementById('viewSite').innerText = user.site || '-';
         document.getElementById('viewRole').innerText = user.role || 'User';
         document.getElementById('viewTrainerCoach').innerText = user.trainer_coach || 'None';
+        document.getElementById('viewLssPdca').innerText = user.lss_pdca || 'None';
 
-        // Explicitly set or clear profile picture per user record
         const defaultImage = "./assets/images/default.jpg";
-        const userImage = user.profile_picture ? user.profile_picture : defaultImage;
+
+        // Appending ?t=timestamp forces the browser to bypass cache and load the fresh image
+        const cacheBuster = `?t=${new Date().getTime()}`;
+        const userImage = user.profile_picture ? `${user.profile_picture}${cacheBuster}` : defaultImage;
+        // -------------------------
 
         const viewImgElement = document.getElementById('viewProfileImg');
         const editImgElement = document.getElementById('editProfileImg');
@@ -107,7 +107,6 @@ async function openUserProfile(userId) {
         if (viewImgElement) viewImgElement.src = userImage;
         if (editImgElement) editImgElement.src = userImage;
 
-        // Clear out any leftover file input selection buffers
         const fileInput = document.getElementById('profile-file-input');
         if (fileInput) fileInput.value = "";
 
@@ -116,13 +115,11 @@ async function openUserProfile(userId) {
     }
 }
 
-// Mode Toggle Helpers (User Profile)
 function switchToEditMode() {
     document.getElementById('profileViewMode').style.display = 'none';
     document.getElementById('editProfileToggleBtn').style.display = 'none';
     document.getElementById('profileEditMode').style.display = 'flex';
 
-    // Populate the edit form inputs with the currently viewed text fields
     document.getElementById('editFirstname').value = document.getElementById('viewFirstname').innerText;
     document.getElementById('editLastname').value = document.getElementById('viewLastname').innerText;
     document.getElementById('editNickname').value = document.getElementById('viewNickname').innerText;
@@ -131,9 +128,11 @@ function switchToEditMode() {
     document.getElementById('editPosition').value = document.getElementById('viewPosition').innerText === '-' ? '' : document.getElementById('viewPosition').innerText;
     document.getElementById('editDepartment').value = document.getElementById('viewDepartment').innerText === '-' ? '' : document.getElementById('viewDepartment').innerText;
     document.getElementById('editCertification').value = document.getElementById('viewCertification').innerText;
+    document.getElementById('editCertState').value = document.getElementById('viewCertState').innerText;
     document.getElementById('editSite').value = document.getElementById('viewSite').innerText;
     document.getElementById('editRole').value = document.getElementById('viewRole').innerText.toLowerCase();
-    document.getElementById('editTrainerCoach').value = document.getElementById('viewTrainerCoach').innerText;
+    document.getElementById('editTrainerCoach').value = document.getElementById('viewTrainerCoach').innerText.toLowerCase();
+    document.getElementById('editLssPdca').value = document.getElementById('viewLssPdca').innerText.toLowerCase();
 }
 
 function switchToViewMode() {
@@ -154,7 +153,6 @@ function addUser() {
 
 let selectedProjectId = null;
 
-// Fetch and render projects list into the table
 async function loadProjectTable() {
     try {
         const response = await fetch('/api/projects');
@@ -170,10 +168,9 @@ async function loadProjectTable() {
             const tr = document.createElement("tr");
             tr.style.cursor = "pointer";
             
-            // Format monetary values for project_savings
             const formattedSavings = project.project_savings 
                 ? `$${Number(project.project_savings).toLocaleString()}K` 
-                : '\$0';
+                : '$0';
 
             tr.innerHTML = `
                 <td>${project.project_owner || ''}</td>
@@ -182,7 +179,6 @@ async function loadProjectTable() {
                 <td>${formattedSavings}</td>
             `;
 
-            // When a project row is clicked, open its project profile view
             tr.addEventListener("click", () => {
                 openProjectProfile(project.id);
             });
@@ -194,15 +190,14 @@ async function loadProjectTable() {
     }
 }
 
-// Mode Toggle Helpers (Project Profile)
 function switchProjectToViewMode() {
     const viewMode = document.getElementById('projectViewMode');
     const editMode = document.getElementById('projectEditMode');
     const editToggleBtn = document.getElementById('editProjectToggleBtn');
 
-    if (viewMode) viewMode.style.display = 'flex'; // or 'block' based on your layout
+    if (viewMode) viewMode.style.display = 'flex';
     if (editMode) editMode.style.display = 'none';
-    if (editToggleBtn) editToggleBtn.style.display = 'inline-block'; // or 'flex'
+    if (editToggleBtn) editToggleBtn.style.display = 'inline-block';
 }
 
 function ProjectEditMode() {
@@ -214,19 +209,16 @@ function ProjectEditMode() {
     if (editMode) editMode.style.display = 'flex';
     if (editToggleBtn) editToggleBtn.style.display = 'none';
 
-    // Populate the edit form inputs with the currently viewed text fields
     document.getElementById('editProjectOwner').value = document.getElementById('viewProjectOwner').innerText;
     document.getElementById('editProjectTitle').value = document.getElementById('viewProjectTitle').innerText;
     document.getElementById('editProjectImpact').value = document.getElementById('viewImpact').innerText;
     
-    // Clean the savings text by removing '\$', ',', 'K', etc. so it's just a raw number
     const savingsText = document.getElementById('viewSavings').innerText;
     document.getElementById('editSavings').value = savingsText.replace(/[^0-9.-]+/g, ""); 
 
     document.getElementById('editQIcount').value = document.getElementById('viewQIcount').innerText;
 }
 
-// Fetch specific project data (including joined user info like department & certification)
 async function openProjectProfile(projectId) {
     try {
         const response = await fetch(`/api/projects/${projectId}`);
@@ -235,26 +227,21 @@ async function openProjectProfile(projectId) {
         const project = await response.json();
         selectedProjectId = project.id;
 
-        // Hide other sections and show project details view
         document.querySelectorAll('.content-section, .project-view').forEach(sec => sec.style.display = 'none');
         document.getElementById('project-profile').style.display = 'block';
 
-        // Force it to open in View Mode every time a project is clicked
         switchProjectToViewMode();
 
-        // Populate View Mode Fields (matching your updated HTML structure)
         document.getElementById('ProjectheaderFirstname').innerText = project.firstname || '';
         document.getElementById('viewProjectOwner').innerText = project.project_owner || '';
         document.getElementById('viewProjectTitle').innerText = project.project_title || '';
         document.getElementById('viewImpact').innerText = project.project_impact || '';
-        document.getElementById('viewSavings').innerText = project.project_savings ? `$${Number(project.project_savings).toLocaleString()}K` : '\$0';
+        document.getElementById('viewSavings').innerText = project.project_savings ? `$${Number(project.project_savings).toLocaleString()}K` : '$0';
         
-        // Dynamically pulled via owner match or direct fields
         document.getElementById('viewProjectCertification').innerText = project.certification || 'None';
         document.getElementById('viewProjectDepartment').innerText = project.department || 'N/A';
         document.getElementById('viewQIcount').innerText = project.quality_improved || '0';
 
-        // Handle User Profile Picture from lookup
         const defaultImage = "./assets/images/default.jpg";
         const ownerImage = project.profile_picture ? project.profile_picture : defaultImage;
         
@@ -266,12 +253,6 @@ async function openProjectProfile(projectId) {
     }
 }
 
-function addUser() {
-    document.getElementById('user-form').style.display = 'flex';
-    document.getElementById('user-list').style.display = 'none';
-}
-
-// Show Add Project Form View
 function addProject() {
     document.getElementById('project-form').style.display = 'flex';
     document.getElementById('project-list').style.display = 'none';
@@ -279,13 +260,108 @@ function addProject() {
 
 
 // ==========================================
-// 4. EVENT LISTENERS SETUP (DOM CONTENT LOADED)
+// 4. TRAINING MANAGEMENT & TABLES
+// ==========================================
+
+let selectedTrainingId = null;
+
+async function loadTrainingTable() {
+    try {
+        const response = await fetch('/api/trainings');
+        if (!response.ok) throw new Error("Failed to fetch trainings");
+        
+        const trainings = await response.json();
+        const tbody = document.getElementById("trainingTableBody");
+        if (!tbody) return;
+        
+        tbody.innerHTML = "";
+
+        trainings.forEach(training => {
+            const tr = document.createElement("tr");
+            tr.style.cursor = "pointer";
+
+            const formattedHrs = training.hrs
+                ? `${Number(training.hrs).toLocaleString()} Hrs` 
+                : '';
+
+            tr.innerHTML = `
+                <td>${training.trainer || ''}</td>
+                <td>${training.training || ''}</td>
+                <td>${formattedHrs}</td>
+            `;
+
+            tr.addEventListener("click", () => {
+                openTrainingProfile(training.id);
+            });
+
+            tbody.appendChild(tr);
+        });
+    } catch (err) {
+        console.error("Error loading training table:", err);
+    }
+}
+
+async function openTrainingProfile(trainingId) {
+    try {
+        const response = await fetch(`/api/trainings/${trainingId}`);
+        if (!response.ok) throw new Error("Failed to fetch training profile");
+        
+        const training = await response.json();
+        selectedTrainingId = training.id;
+
+        document.querySelectorAll('.content-section, .training-view').forEach(sec => sec.style.display = 'none');
+        document.getElementById('training-profile').style.display = 'block';
+
+        switchToTrainingViewMode();
+
+        document.getElementById('TrainingheaderFirstname').innerText = training.firstname || training.trainer || '';
+        document.getElementById('viewTraining').innerText = training.training || '';
+        document.getElementById('viewTrainer').innerText = training.trainer || '';
+        document.getElementById('viewHrs').innerText = training.hrs || '';
+
+        const defaultImage = "./assets/images/default.jpg";
+        // Fixed: Use training.profile_picture instead of undefined 'user'
+        const trainerImage = training.profile_picture ? training.profile_picture : defaultImage;
+
+        const viewImgElement = document.getElementById('viewTrainerImg');
+        if (viewImgElement) viewImgElement.src = trainerImage;
+
+    } catch (err) {
+        console.error("Error opening training profile:", err);
+    }
+}
+
+function switchToTrainingEditMode() {
+    document.getElementById('trainingViewMode').style.display = 'none';
+    document.getElementById('editTrainingToggleBtn').style.display = 'none';
+    document.getElementById('trainingEditMode').style.display = 'flex';
+
+    document.getElementById('editTraining').value = document.getElementById('viewTraining').innerText;
+    document.getElementById('editTrainer').value = document.getElementById('viewTrainer').innerText;
+    document.getElementById('edithrs').value = document.getElementById('viewHrs').innerText;
+}
+
+function switchToTrainingViewMode() {
+    document.getElementById('trainingViewMode').style.display = 'flex';
+    document.getElementById('editTrainingToggleBtn').style.display = 'flex';
+    document.getElementById('trainingEditMode').style.display = 'none';
+}
+
+function addTraining() {
+    document.getElementById('training-form').style.display = 'flex';
+    document.getElementById('training-list').style.display = 'none';
+}
+
+
+// ==========================================
+// 5. EVENT LISTENERS SETUP (DOM CONTENT LOADED)
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initial Data Loads
     loadUserTable();
     loadProjectTable();
+    loadTrainingTable();
 
     // ------------------------------------------
     // User Profile Picture Handling
@@ -304,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    editImg.src = event.target.result; // Live preview
+                    editImg.src = event.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -312,40 +388,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ------------------------------------------
-    // Navigation / Form Toggle Buttons
+    // Toggle Buttons & Navigation Triggers
     // ------------------------------------------
     const editToggleBtn = document.getElementById('editProfileToggleBtn');
-    if (editToggleBtn) {
-        editToggleBtn.addEventListener('click', switchToEditMode);
-    }
+    if (editToggleBtn) editToggleBtn.addEventListener('click', switchToEditMode);
 
     const addUserToggleBtn = document.getElementById('addUserToggleBtn');
-    if (addUserToggleBtn) {
-        addUserToggleBtn.addEventListener('click', addUser);
-    }
+    if (addUserToggleBtn) addUserToggleBtn.addEventListener('click', addUser);
 
     const ProjecteditToggleBtn = document.getElementById('editProjectToggleBtn');
-    if (ProjecteditToggleBtn) {
-        ProjecteditToggleBtn.addEventListener('click', ProjectEditMode);
-    }
+    if (ProjecteditToggleBtn) ProjecteditToggleBtn.addEventListener('click', ProjectEditMode);
 
     const addProjectToggleBtn = document.getElementById('addProjectToggleBtn');
-    if (addProjectToggleBtn) {
-        addProjectToggleBtn.addEventListener('click', addProject);
-    }
+    if (addProjectToggleBtn) addProjectToggleBtn.addEventListener('click', addProject);
+
+    const TrainingeditToggleBtn = document.getElementById('editTrainingToggleBtn');
+    if (TrainingeditToggleBtn) TrainingeditToggleBtn.addEventListener('click', switchToTrainingEditMode);
+
+    const addTrainingToggleBtn = document.getElementById('addTrainingToggleBtn');
+    if (addTrainingToggleBtn) addTrainingToggleBtn.addEventListener('click', addTraining);
 
     // Back Buttons
     const backBtn = document.getElementById('backToUsersBtn');
     if (backBtn) {
         backBtn.addEventListener('click', () => {
-            showSection('users', document.querySelectorAll('.left-panel .menu-item')[2]);
+            showSection('users', document.querySelectorAll('.left-panel .menu-item')[3]);
         });
     }
 
     const ProjectbackBtn = document.getElementById('backToProjectsBtn');
     if (ProjectbackBtn) {
         ProjectbackBtn.addEventListener('click', () => {
-            showSection('project', document.querySelectorAll('.left-panel .menu-item')[1]);
+            showSection('project', document.querySelectorAll('.left-panel .menu-item')[2]);
+        });
+    }
+
+    const TrainingbackBtn = document.getElementById('backToTrainingsBtn');
+    if (TrainingbackBtn) {
+        TrainingbackBtn.addEventListener('click', () => {
+            showSection('training', document.querySelectorAll('.left-panel .menu-item')[1]);
         });
     }
 
@@ -367,31 +448,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ------------------------------------------
-    // Project Cancel Button Handling
-    // ------------------------------------------
-    const cancelProjectBtn = document.getElementById('cancelprojectBtn');
-    if (cancelProjectBtn) {
-        cancelProjectBtn.addEventListener('click', () => {
-            // Switch back to project view mode
-            switchProjectToViewMode();
+    const backFromAddTrainingBtn = document.getElementById('backFromAddTrainingBtn');
+    if (backFromAddTrainingBtn) {
+        backFromAddTrainingBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('training-form').style.display = 'none';
+            document.getElementById('training-list').style.display = 'flex';
         });
     }
 
-    // ------------------------------------------
-    // Project Cancel Button Handling
-    // ------------------------------------------
+    // Cancel Profile Edit
     const cancelUserBtn = document.getElementById('cancelProfileBtn');
     if (cancelUserBtn) {
-        cancelUserBtn.addEventListener('click', () => {
-            // Switch back to project view mode
-            switchToViewMode();
-        });
+        cancelUserBtn.addEventListener('click', switchToViewMode);
+    }
+
+    // Cancel Project Edit
+    const cancelProjectBtn = document.getElementById('cancelprojectBtn');
+    if (cancelProjectBtn) {
+        cancelProjectBtn.addEventListener('click', switchProjectToViewMode);
     }
 
     // ------------------------------------------
-    // Profile Save Action
+    // Form Submissions & Saves
     // ------------------------------------------
+
+    // User Profile Save
     const saveBtn = document.getElementById('saveProfileBtn');
     if (saveBtn) {
         saveBtn.addEventListener('click', async (e) => {
@@ -406,9 +488,11 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('position', document.getElementById('editPosition').value);
             formData.append('department', document.getElementById('editDepartment').value);
             formData.append('certification', document.getElementById('editCertification').value);
+            formData.append('cert_candidate', document.getElementById('editCertState').value);
             formData.append('site', document.getElementById('editSite').value);
             formData.append('role', document.getElementById('editRole').value);
             formData.append('trainer_coach', document.getElementById('editTrainerCoach').value);
+            formData.append('lss_pdca', document.getElementById('editLssPdca').value);
 
             if (fileInput && fileInput.files.length > 0) {
                 formData.append('imageFile', fileInput.files[0]);
@@ -433,9 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ------------------------------------------
-    // Add New Project Form Submission Handling
-    // ------------------------------------------
+    // Add New Project Form Submission
     const projectFormElement = document.querySelector('#project-form .project-form');
     if (projectFormElement) {
         projectFormElement.addEventListener('submit', async (e) => {
@@ -447,9 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch('/api/projects', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(projectData)
                 });
 
@@ -461,9 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('project-form').style.display = 'none';
                 document.getElementById('project-list').style.display = 'flex';
 
-                // Refresh the project table list
                 loadProjectTable();
-
             } catch (err) {
                 console.error('Error submitting project:', err);
                 alert(`Error: ${err.message}`);
@@ -471,9 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ------------------------------------------
     // Project Save Action
-    // ------------------------------------------
     const ProjectsaveBtn = document.getElementById('saveprojecteBtn');
     if (ProjectsaveBtn) {
         ProjectsaveBtn.addEventListener('click', async (e) => {
@@ -490,9 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch(`/api/projects/${selectedProjectId}`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(updatedData)
                 });
 
@@ -500,13 +574,125 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!response.ok) throw new Error(result.error || "Failed to update project");
 
                 alert("Project updated successfully!");
-                loadProjectTable();                  // Refresh project table
-                openProjectProfile(selectedProjectId); // Refresh project profile view
+                loadProjectTable();
+                openProjectProfile(selectedProjectId);
             } catch (err) {
                 console.error("Save error:", err);
                 alert("Error saving project: " + err.message);
             }
         });
     }
-});
 
+    // Training Save Action
+    const TrainingsaveBtn = document.getElementById('savetrainingBtn');
+    if (TrainingsaveBtn) {
+        TrainingsaveBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const updatedData = {
+                trainer: document.getElementById('editTrainer').value,
+                training: document.getElementById('editTraining').value,
+                hrs: document.getElementById('edithrs').value
+            };
+
+            try {
+                // Fixed: Uses global selectedTrainingId instead of undefined scope variable
+                const response = await fetch(`/api/trainings/${selectedTrainingId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedData)
+                });
+
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || "Failed to update training");
+
+                alert("Training updated successfully!");
+                loadTrainingTable();
+                openTrainingProfile(selectedTrainingId);
+            } catch (err) {
+                console.error("Save error:", err);
+                alert("Error saving training: " + err.message);
+            }
+        });
+    }
+
+    // Add New Training Form Submission
+    const trainingFormElement = document.querySelector('#training-form .training-form');
+    if (trainingFormElement) {
+        trainingFormElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(trainingFormElement);
+            const trainingData = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/trainings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(trainingData)
+                });
+
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || 'Failed to add training');
+
+                alert('Training added successfully!');
+                // Fixed: Resets trainingFormElement instead of projectFormElement
+                trainingFormElement.reset();
+                document.getElementById('training-form').style.display = 'none';
+                document.getElementById('training-list').style.display = 'flex';
+
+                loadTrainingTable();
+            } catch (err) {
+                console.error('Error submitting training:', err);
+                alert(`Error: ${err.message}`);
+            }
+        });
+    }
+
+        const registerForm = document.getElementById("user-form2");
+    const messageContainer = document.getElementById("registerMessage");
+
+    if (registerForm) {
+        registerForm.addEventListener("submit", async (e) => {
+            e.preventDefault(); 
+
+            messageContainer.innerText = "Processing...";
+            messageContainer.style.color = "gray";
+
+            const formData = new FormData(registerForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                console.log("Sending registration data...", data);
+
+                const response = await fetch("/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                console.log("Response JSON:", result);
+
+                if (!response.ok) {
+                    messageContainer.style.color = "red";
+                    messageContainer.innerText = result.error || "Registration failed.";
+                } else {
+                    messageContainer.style.color = "green";
+                    messageContainer.innerText = result.message;
+                    registerForm.reset();
+                    
+                    setTimeout(() => {
+                        window.location.reload(); 
+                    }, 2000);
+                }
+            } catch (err) {
+                console.error("Fetch/Network error caught:", err);
+                messageContainer.style.color = "red";
+                messageContainer.innerText = "An unexpected error occurred.";
+            }
+        });
+    } else {
+        console.warn("actualRegisterForm element not found in DOM!");
+    }
+});

@@ -40,7 +40,6 @@
     padding: 20px;
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
     align-items: center;
 }
 
@@ -66,7 +65,7 @@
 
 .username span {
     color: var(--primary-red-color);
-    font-size: clamp(2rem, 3vw, 24rem);
+    font-size: clamp(2rem, 3vw, 2.4rem);
 }
 
 .profile-details div:not(.username) {
@@ -146,16 +145,22 @@
     flex-grow: 0;
     flex-shrink: 1;
     flex-basis: 350px;
+    position: relative;
 }
 
 .content {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    
+}
+
+.content h2 {
+    font-size: clamp(1rem, 1vw, 2.4rem);
 }
 
 .project-title h1 {
-    font-size: clamp(2rem, 2vw, 24rem);
+    font-size: clamp(1rem, 1vw, 2.4rem);
     color: var(--primary-red-color);
 }
 
@@ -172,5 +177,9 @@
 
     .profile, .project-cards, .divider {
         justify-content: center;
+    }
+
+    .profile {
+        flex-wrap: wrap;
     }
 }

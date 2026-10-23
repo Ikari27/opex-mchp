@@ -1,17 +1,6 @@
-function showGallery(galleryId, button) {
-
-    document.querySelectorAll('.coaches-gallery').forEach(gallery => {
-        gallery.classList.remove('active');
-    });
-
-    document.querySelectorAll('.site-selector button').forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    document.getElementById(galleryId).classList.add('active');
-
-    button.classList.add('active');
-}
+// State variables to track active selections
+let currentSite = 'mphil1';
+let currentTeam = 'lss';
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchCoaches();
@@ -51,16 +40,18 @@ async function fetchCoaches() {
             const fullName = `${user.nickname || user.firstname || ''} ${user.lastname || ''}`.trim();
             const position = user.position || '';
             const department = user.department || '';
+            
+            // Normalize lss_pdca value from database (e.g., 'PDCA' -> 'pdca', 'LSS' -> 'lss')
+            const lssPdca = (user.lss_pdca || '').toLowerCase().trim();
 
-            // 2. Build Card Markup
+            // 2. Build Card Markup with data-team attribute included
             const cardHTML = `
-                <a href="profile.html?id=${user.id}" class="coach-card-link" style="text-decoration: none; color: inherit;">
+                <a href="trainer_profile.html?id=${user.id}" class="coach-card-link" data-team="${lssPdca}" style="text-decoration: none; color: inherit;">
                     <div class="coach-card">
                         <img src="${imgSrc}" alt="${fullName}">
                         <div class="coach-caption">
                             <h2>${fullName}</h2>
                             <p class="coach-position">${position}</p>
-                            <p class="coach-department">${department}</p>
                         </div>
                     </div>
                 </a>
@@ -76,11 +67,67 @@ async function fetchCoaches() {
             }
         });
 
+        // Run initial filter after inserting cards
+        filterCoaches();
+
     } catch (error) {
         console.error("Error loading Coach details:", error);
     } finally {
-        // ALWAYS RUNS: Hides spinner and shows main gallery content seamlessly
+        // Hides spinner and shows main gallery content seamlessly
         if (spinner) spinner.style.display = 'none';
         if (content) content.style.display = 'block';
     }
+}
+
+// 4. Handle button clicks for site and team selection
+function showGallery(type, element) {
+    // Check if site button was clicked
+    if (type === 'mphil1' || type === 'mphil3') {
+        currentSite = type;
+
+        // Update active class for site buttons
+        const siteButtons = document.querySelectorAll('.site-selector button');
+        siteButtons.forEach(btn => btn.classList.remove('active'));
+        element.classList.add('active');
+
+        // Switch visible gallery view container
+        const galleries = document.querySelectorAll('.coaches-gallery');
+        galleries.forEach(gallery => gallery.classList.remove('active'));
+        
+        const targetGallery = document.getElementById(type);
+        if (targetGallery) {
+            targetGallery.classList.add('active');
+        }
+    }
+    // Check if team button was clicked (lss or pdca)
+    else if (type === 'lss' || type === 'pdca') {
+        currentTeam = type;
+
+        // Update active class for team buttons
+        const teamButtons = document.querySelectorAll('.team-selector button');
+        teamButtons.forEach(btn => btn.classList.remove('active'));
+        element.classList.add('active');
+    }
+
+    // Apply the filter visually
+    filterCoaches();
+}
+
+// 5. Core filter logic to show/hide trainer cards
+function filterCoaches() {
+    const activeGallery = document.querySelector('.coaches-gallery.active');
+    if (!activeGallery) return;
+
+    // Target the card links containing the data-team attribute
+    const trainerCards = activeGallery.querySelectorAll('.coach-card-link');
+
+    trainerCards.forEach(card => {
+        const cardTeam = card.getAttribute('data-team');
+
+        if (cardTeam === currentTeam) {
+            card.style.display = 'block'; // Show if it matches active lss/pdca
+        } else {
+            card.style.display = 'none';  // Hide otherwise
+        }
+    });
 }
